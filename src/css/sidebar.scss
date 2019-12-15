@@ -1,0 +1,20 @@
+@import './variable.scss';
+@import url('https://fonts.googleapis.com/css?family=Lato|PT+Sans&display=swap');
+//   font-family: 'PT Sans', sans-serif;
+//   font-family: 'Lato', sans-serif;
+
+.sidebar {
+    background: $dark;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 100vh;
+    box-shadow: 0 1.4rem 2rem rgba(0,0,0,0.8);
+}
+
+.logo {
+    width: 80%;
+    display: block;
+    margin: 60px auto;
+}

@@ -1,0 +1,13 @@
+//Primary Colors
+$light: rgb(228, 233, 235);
+$pink: #F56A79;
+$red: #FF414D;
+$blue: #1AA6B7;
+$dark: #002D40;
+
+//Gradients
+$gr-lightBlue: linear-gradient(120deg, $light, $blue);
+$gr-redPink: linear-gradient(120deg, $pink, $red);
+$gr-lightPink: linear-gradient(120deg, $light, $pink);
+$gr-darkBlue: linear-gradient(120deg, $dark, $blue);
+$gr-redDark: linear-gradient(120deg, $red, $dark);
