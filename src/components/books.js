@@ -1,5 +1,4 @@
 import React from "react";
-//import {updateSidebar} from "../javascript/functions"
 import FindBook from "./findBook";
 import BooksGrid from "./BookGrid";
 import Sidebar from "./sidebar";
@@ -98,13 +97,18 @@ export default class Books extends React.Component {
       });
   }
 
+  async componentDidMount() {
+    fetch("/api/books")
+      .then(res => res.json())
+      .then(test => this.setState({test}, () => console.log("working...", test)));
+  }
+
   render() {
     const { books, error, findBook_Display } = this.state;
 
     return (
       <React.Fragment>
         <Sidebar />
-
         {/*Header with the title of the page*/}
         <div className="header" id="header">
           <button
@@ -115,6 +119,7 @@ export default class Books extends React.Component {
             <i class="fas fa-bars"></i>
           </button>
           <h1>Bookshelf</h1>
+          {this.state.test}
         </div>
 
         {/*Loading and error message when occur*/}
