@@ -14,7 +14,7 @@ export function searchBook (book, lan='en') {
           title: data.title,
           authors: data.authors,
           categories: data.categories,
-          pages: data.pageCount,
+          rating: null,
           image: data.imageLinks.thumbnail,
           isbn: data.industryIdentifiers[0].identifier
         }

@@ -1,209 +1,9 @@
 import React from "react";
+//import {updateSidebar} from "../javascript/functions"
+import FindBook from "./findBook";
+import BooksGrid from "./BookGrid";
+import Sidebar from "./sidebar";
 import { searchBook } from "../api/api";
-
-//Title and short description of the page
-function Header() {
-  return (
-    <div className="header">
-      <h1>Add the books you've read here</h1>
-    </div>
-  );
-}
-
-//The space where all the books are displayed
-//Goes throught all the books in the "books" array
-function BooksGrid({ books }) {
-  return (
-    <div className="books">
-      {books.map(book => {
-        const { title, authors, publishedDate, image, categories } = book;
-
-        return (
-          <div className="book-container">
-            <img alt="Book Cover" className="book-img" src={image} />
-            <div className="book-info">
-              <h6 className="book-category">
-                {categories}
-                <span className="book-release">{publishedDate}</span>
-              </h6>
-              <h2 className="book-title">{title}</h2>
-              <h5 className="book-author">by {authors.join(", ")}</h5>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-//Show form to find book online by name or ISBN
-//PARAMETHERS: toogleFrom to close form & onSubmit to send input value to default class
-class FindBook extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      book: { //all data needed of the book
-        title: null,
-        authors: [],
-        pages: null,
-        categories: null,
-        image: "../../images/harry potter and the camber of secrets.jpg",
-        isbn: null
-      },
-      displaySearchOnline: false //decides to show online search with api
-    };
-
-    this.toogle_Display = this.toogle_Display.bind(this);
-  }
-
-  toogle_Display() {
-    const { displaySearchOnline } = this.state;
-    this.setState({ displaySearchOnline: !displaySearchOnline });
-  }
-
-  handleSubmit = event => {
-    event.preventDefault();
-    //if categories is null it means that the search was online
-    //so only the book title or isbn is needed
-    if (this.state.book.categories === null) {
-      this.props.onSubmit(this.state.book.title);
-    } else {
-      this.props.onSubmit(this.state.book);
-    }
-  };
-  
-  //when the key is authors, it needs to be inside an array
-  handleChange = key => event => {
-    if (key === "authors") {
-      this.setState({
-        book: {
-          ...this.state.book,
-          authors: [event.target.value]
-        }
-      });
-    } else {
-      this.setState({
-        book: {
-          ...this.state.book,
-          [key]: event.target.value
-        }
-      });
-    }
-  };
-
-  render() {
-    const { displaySearchOnline } = this.state;
-
-    return (
-      <div class="form-AddBook">
-        <h2>ADD A BOOK</h2>
-
-        {/*MANUALLY ADDED (default)*/}
-        {!displaySearchOnline && (
-          <form onSubmit={this.handleSubmit}>
-            <button
-              type="button"
-              className="btn-searchOnline btn"
-              onClick={this.toogle_Display}
-            >
-              Search Online
-            </button>
-            <br />
-
-            <h4>or</h4>
-            <input
-              className="inp"
-              autoComplete="off"
-              type="text"
-              placeholder="Title*"
-              name="title"
-              value={this.state.title}
-              onChange={this.handleChange("title")}
-              required
-            />
-
-            <input
-              className="inp"
-              autoComplete="off"
-              type="text"
-              placeholder="Author*"
-              name="authors"
-              value={this.state.authors}
-              onChange={this.handleChange("authors")}
-              required
-            />
-
-            <input
-              className="inp"
-              autoComplete="off"
-              type="number"
-              placeholder="Pages"
-              name="pages"
-              value={this.state.pages}
-              onChange={this.handleChange("pages")}
-              required
-            />
-
-            <input
-              className="inp"
-              autoComplete="off"
-              type="text"
-              placeholder="Categorires"
-              name="categoties"
-              value={this.state.categories}
-              onChange={this.handleChange("categories")}
-              required
-            />
-
-            <button
-              type="submit"
-              class="btn-AddBook btn"
-              disabled={!this.state}
-            >
-              Add book
-            </button>
-          </form>
-        )}
-
-        {/*ONLINE SEARCH*/}
-        {displaySearchOnline && (
-          <form onSubmit={this.handleSubmit}>
-            <span className="a" href="" onClick={this.toogle_Display}>
-              Go back to Add Book manually
-            </span>
-
-            <input
-              className="inp"
-              autoComplete="off"
-              type="text"
-              placeholder="Search by title or ISBN"
-              name="title"
-              value={this.state.title}
-              onChange={this.handleChange("title")}
-              required
-            />
-
-            <button
-              type="submit"
-              class="btn-AddBook btn"
-              disabled={!this.state}
-            >
-              Add book
-            </button>
-          </form>
-        )}
-
-        <button
-          className="btn-toggle-AddBook btn"
-          onClick={this.props.toogle_findBook}
-        >
-          Close
-        </button>
-      </div>
-    );
-  }
-}
 
 function Loading() {
   return (
@@ -229,31 +29,47 @@ export default class Books extends React.Component {
 
     this.getBooks = this.getBooks.bind(this);
     this.isLoading = this.isLoading.bind(this);
-    this.toogle_findBook = this.toogle_findBook.bind(this);
+    this.toogleDisplay = this.toogleDisplay.bind(this);
   }
+
+  //Shows and hides the sidebar
+  updateSidebar = () => {
+    let sidebar = document.getElementById("sidebar");
+    let header = document.getElementById("header");
+    let books = document.getElementById("books");
+    let btnSidebar = document.getElementById("btn-sidebar");
+
+    //if its hidden
+    if (sidebar.style.left === "-20%") {
+      //center all components
+      sidebar.style.left = "0";
+      header.style.marginLeft = "20%";
+      books.style.marginLeft = "20%";
+      btnSidebar.style.left = "20%";
+    } else {
+      sidebar.style.left = "-20%";
+      header.style.marginLeft = "0";
+      books.style.marginLeft = "auto";
+      books.style.width = "100%";
+      btnSidebar.style.left = "0";
+    }
+    //change class from light(hidden) to dark(shown)
+    btnSidebar.classList.toggle("btn-sidebar-light");
+  };
 
   //Adds a new book for the user and re renders
   handleSubmit = book => {
-    //if book is only and string, it need to search the book with an API
-    if (typeof book === "string") {
-      //search book with API
-      this.getBooks(book);
-    } else {
-      //Adds the new book manually
-      this.setState({
-        books: [...this.state.books, book]
-      });
-    }
-
-    //Closes and cleans findBook
-    this.toogle_findBook();
+    //Add the new book to the books state
+    this.setState({
+      books: [...this.state.books, book]
+    });
+    //Closes and cleans findBook form
+    this.toogleDisplay("findBook_Display");
   };
 
-  //Shows and hides findBook
-  toogle_findBook() {
-    const { findBook_Display } = this.state;
-
-    this.setState({ findBook_Display: !findBook_Display });
+  //Shows or hides the key form
+  toogleDisplay(key) {
+    this.setState({ [key]: !this.state[key] });
   }
 
   //Returns true if the page is still fetching books
@@ -287,20 +103,34 @@ export default class Books extends React.Component {
 
     return (
       <React.Fragment>
+        <Sidebar />
+
         {/*Header with the title of the page*/}
-        <Header />
+        <div className="header" id="header">
+          <button
+            className="btn-sidebar"
+            id="btn-sidebar"
+            onClick={this.updateSidebar}
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1>Bookshelf</h1>
+        </div>
 
         {/*Loading and error message when occur*/}
         {this.isLoading() && <Loading />}
         {error && <h4>{error}</h4>}
 
         {/*All the user books on cotainers*/}
-        <BooksGrid books={books} />
+        <BooksGrid
+          books={books}
+          toogleDisplay={() => this.toogleDisplay("rateBook_Display")}
+        />
 
         {/*Button to display findBook*/}
         {!findBook_Display && (
           <button
-            onClick={this.toogle_findBook}
+            onClick={() => this.toogleDisplay("findBook_Display")}
             className="btn-toggle-AddBook btn"
           >
             Add a book
@@ -311,7 +141,7 @@ export default class Books extends React.Component {
         {findBook_Display && (
           <FindBook
             onSubmit={book => this.handleSubmit(book)}
-            toogle_findBook={this.toogle_findBook}
+            toogleDisplay={() => this.toogleDisplay("findBook_Display")}
           />
         )}
       </React.Fragment>

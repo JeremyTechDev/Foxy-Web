@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Books from "./components/books";
-import Sidebar from "./components/sidebar";
 //import SingIn from "./components/login";
 import "./css/books.scss";
 import "./css/index.scss";
@@ -12,7 +11,7 @@ class App extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {<Sidebar />}
+        {/*<Sidebar />*/}
         {/*<SingIn />*/}
         {<Books />}
       </React.Fragment>

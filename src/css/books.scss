@@ -11,11 +11,16 @@
 /*******  HEADER  *******/
 .header {
   background-color: $light;
-  width: 80%;
-  padding: 50px;
+  width: 100%;
+  padding: 40px;
+  display: block;
   margin: 0 0 20px 20%;
   box-shadow: 0 1.4rem 2rem rgba(0, 0, 0, 0.3);
   font-family: "PT Sans", sans-serif;
+  font-size: 40px;
+  text-transform: uppercase;
+  letter-spacing: 15px;
+  transition: 0.4s all;
 }
 
 /***********************************/
@@ -26,27 +31,35 @@
   flex-wrap: wrap;
   width: 80%;
   margin: 0 auto 0 20%;
-  padding: 0;
+  padding: 0 40px;
+  transition: 0.4s all;
 }
 .book-container {
   background-color: $light;
   padding: 20px;
   display: flex;
-  margin: 20px auto;
-  width: 450px;
-  height: 270px;
+  margin: 20px auto 20px 2rem;
+  min-width: 450px;
+  max-width: 500px;
+  max-height: 300px;
   box-shadow: 0 1.4rem 2rem rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   img {
     border-radius: 10px;
-    min-width: 40%;
+    display: block;
+    min-height:100%;
+    min-width: 180px;
+    max-width: 20px;
     transform: translateX(-3rem);
   }
 }
 .book-info {
-  margin: auto 0 auto -1rem;
+  margin: auto 0 auto -2rem;
+  overflow: hidden;
+  line-clamp: 3;
+  box-orient: vertical;
   .book-title {
-    color: $red;
+    color: $pri;
   }
   .book-author {
     color: $dark;
@@ -57,6 +70,14 @@
   .book-release {
     color: $dark;
     float: right;
+  }
+  .book-rate {
+    color: #f1c40f;
+    font-size: 40px !important;
+    margin: 5px auto;
+    span {
+      color: gray;
+    }
   }
 }
 
@@ -71,6 +92,7 @@
   color: $light;
   transition: 0.3s all;
   font-size: 18px;
+  outline: 0;
 }
 
 .btn-toggle-AddBook {
@@ -78,31 +100,36 @@
   bottom: 20px;
   right: 20px;
   width: 130px;
-  background: $gr-redPink;
+  background: $pri;
 }
 
 .btn-searchOnline {
-  background: $gr-darkBlue;
+  background: $sec;
   margin: 10px;
 }
 
 .btn-AddBook {
+  float: left;
   background-color: #4caf50;
-  margin: 15px;
+  margin: 10px auto -22px -22px;
+  width: 185px;
 }
 
-.btn-toggle-AddBook:hover,
-.btn-AddBook:hover,
-.btn-searchOnline:hover {
+.btn-Online {
+  margin: 0 auto;
+  float: none;
+}
+
+.btn:hover {
   cursor: pointer;
-  opacity: 0.8;
+  opacity: 0.75;
 }
 
 .form-AddBook {
   display: block;
   position: fixed;
   width: 25%;
-  min-height: 60%;
+  min-height: 45%;
   bottom: 12px;
   right: 12px;
   padding: 30px;
@@ -128,13 +155,21 @@
 
 }
 .a:hover {
-  color: $blue;
+  color: royalblue;
+}
+
+.img-addBook {
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+  max-width: 102px;
+  max-height: 201px;
 }
 
 .inp {
   width: 90%;
   border: none;
-  border-bottom: 2px solid $blue;
+  border-bottom: 2px solid $sec;
   font-size: 18px;
   margin: 10px;
   padding: 5px 10px;
@@ -142,4 +177,38 @@
 
 .form-btnAdd:hover {
   opacity: 0.8;
+}
+
+.h3-rating {
+  margin-top: 5px;
+}
+.rating {
+  margin: -15px auto 0px auto;
+  direction: rtl;
+}
+.star {
+  font-size: 50px;
+  color: #313131;
+  transition: 0.3s all;
+  border: none;
+  background: none;
+  outline: 0;
+}
+.star:hover {
+  color: #f1c40f;
+}
+.star1:hover ~ button {
+  color: #f1c40f;
+}
+.star2:hover ~ button {
+  color: #f1c40f;
+}
+.star3:hover ~ button {
+  color: #f1c40f;
+}
+.star4:hover ~ button {
+  color: #f1c40f;
+}
+.star5:hover ~ button {
+  color: #f1c40f;
 }
