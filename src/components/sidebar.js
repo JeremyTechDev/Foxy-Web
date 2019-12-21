@@ -31,7 +31,7 @@ export default class Sidebar extends React.Component {
 
             <div className="btn-user">
               <button className="btn-user-options">
-                <i class="fas fa-ellipsis-h"></i>
+                <i className="fas fa-ellipsis-h"></i>
               </button>
             </div>
           </div>

@@ -2,6 +2,7 @@ import React from "react";
 import FindBook from "./findBook";
 import BooksGrid from "./BookGrid";
 import Sidebar from "./sidebar";
+import { PostData } from "../services/PostData";
 import { searchBook } from "../api/api";
 
 function Loading() {
@@ -39,14 +40,14 @@ export default class Books extends React.Component {
     let btnSidebar = document.getElementById("btn-sidebar");
 
     //if its hidden
-    if (sidebar.style.left === "-20%") {
+    if (sidebar.style.left === "-270px") {
       //center all components
       sidebar.style.left = "0";
-      header.style.marginLeft = "20%";
-      books.style.marginLeft = "20%";
-      btnSidebar.style.left = "20%";
+      header.style.marginLeft = "270px";
+      books.style.marginLeft = "270px";
+      btnSidebar.style.left = "270px";
     } else {
-      sidebar.style.left = "-20%";
+      sidebar.style.left = "-270px";
       header.style.marginLeft = "0";
       books.style.marginLeft = "auto";
       books.style.width = "100%";
@@ -62,6 +63,7 @@ export default class Books extends React.Component {
     this.setState({
       books: [...this.state.books, book]
     });
+    console.log(this.state.books);
     //Closes and cleans findBook form
     this.toogleDisplay("findBook_Display");
   };
@@ -97,10 +99,16 @@ export default class Books extends React.Component {
       });
   }
 
-  async componentDidMount() {
-    fetch("/api/books")
-      .then(res => res.json())
-      .then(test => this.setState({test}, () => console.log("working...", test)));
+  componentDidMount() {
+    PostData("selectAllBooks", {})
+      .then(res => {
+        res.allBooks.forEach(book => {
+          console.log(book);
+          this.setState({
+            books: [...this.state.books, book]
+          })
+        })
+      })
   }
 
   render() {
@@ -116,7 +124,7 @@ export default class Books extends React.Component {
             id="btn-sidebar"
             onClick={this.updateSidebar}
           >
-            <i class="fas fa-bars"></i>
+            <i className="fas fa-bars"></i>
           </button>
           <h1>Bookshelf</h1>
           {this.state.test}

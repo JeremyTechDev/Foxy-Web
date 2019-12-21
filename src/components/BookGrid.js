@@ -33,31 +33,22 @@ export default class BooksGrid extends React.Component {
             title,
             authors,
             publishedDate,
-            image,
+            img,
             categories,
-            rating
+            rate
           } = book;
 
           return (
             <div className="book-container">
-              <img alt="Book Cover" className="book-img" src={image} />
+              <img alt="Book Cover" className="book-img" src={img} />
               <div className="book-info">
                 <h6 className="book-category">
                   {categories}
                   <span className="book-release">{publishedDate}</span>
                 </h6>
                 <h2 className="book-title">{title}</h2>
-                <h5 className="book-author">by {authors.join(", ")}</h5>
-                {/*If there's no rating show rate btn. Show rateing othervise*/}
-                {rating === null && (
-                  <button
-                    className="btn btn-rate"
-                    onClick={() => this.props.toogleDisplay("rateBook_Display")}
-                  >
-                    rate this book
-                  </button>
-                )}
-                {rating !== null && this.displayRate(rating)}
+                <h5 className="book-author">by {authors}</h5>
+                {this.displayRate(rate)}
               </div>
             </div>
           );

@@ -1,4 +1,5 @@
 import React from "react";
+import { PostData } from "../services/PostData";
 import { searchBook } from "../api/api";
 
 class ShowErrorOnRating extends React.Component {
@@ -17,9 +18,9 @@ export default class FindBook extends React.Component {
       book: {
         //all data needed of the book
         title: null,
-        authors: [],
+        authors: null,
         categories: null,
-        image: require("../images/cover.png"),
+        image: null,
         isbn: null,
         rating: null
       },
@@ -28,6 +29,7 @@ export default class FindBook extends React.Component {
     };
 
     this.toogle_Display = this.toogle_Display.bind(this);
+    this.insertBook = this.insertBook.bind(this);
   }
 
   setRating(rate) {
@@ -68,23 +70,17 @@ export default class FindBook extends React.Component {
 
   //runs everytime user changes any input file
   handleChange = key => event => {
-    //when the key is authors, it needs to be inside an array
-    if (key === "authors") {
-      this.setState({
-        book: {
-          ...this.state.book,
-          authors: [event.target.value]
-        }
-      });
-    } else {
-      this.setState({
-        book: {
-          ...this.state.book,
-          [key]: event.target.value
-        }
-      });
-    }
+    this.setState({
+      book: {
+        ...this.state.book,
+        [key]: event.target.value
+      }
+    });
   };
+
+  insertBook() {
+    PostData("insertBook", this.state.book);
+  }
 
   render() {
     const { displaySearchOnline, showErrorOnRating } = this.state;
@@ -95,7 +91,7 @@ export default class FindBook extends React.Component {
 
         {/*MANUALLY ADDED (default)*/}
         {!displaySearchOnline && (
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.insertBook}>
             <button
               type="button"
               className="btn-searchOnline btn"
@@ -107,11 +103,21 @@ export default class FindBook extends React.Component {
 
             <h4>or</h4>
 
-            <img
-              className="img-addBook"
-              src={this.state.book.image}
-              alt="Book Cover"
-            />
+            <div className="cover-upload">
+              <label htmlFor="file-upload">
+                <img
+                  className="img-addBook"
+                  id="book-cover"
+                  src={this.state.book.image}
+                  alt="Book Cover"
+                />
+              </label>
+
+              <input
+                type="file"
+                id="file-upload"
+              />
+            </div>
 
             {showErrorOnRating && <ShowErrorOnRating />}
 
