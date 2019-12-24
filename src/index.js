@@ -1,16 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Books from "./components/books";
-import "./css/books.scss";
+//import Books from "./components/books";
+//import Home from "./components/home"
+import Wall from "./components/wall"
 import "./css/index.scss";
-import "./css/sidebar.scss";
 
 class App extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {/*<Sidebar />*/}
-        {<Books />}
+        {<Wall />}
       </React.Fragment>
     );
   }

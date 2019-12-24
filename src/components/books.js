@@ -4,6 +4,7 @@ import BooksGrid from "./BookGrid";
 import Sidebar from "./sidebar";
 import { PostData } from "../services/PostData";
 import { searchBook } from "../api/api";
+import "../css/books.scss";
 
 function Loading() {
   return (
@@ -31,31 +32,6 @@ export default class Books extends React.Component {
     this.isLoading = this.isLoading.bind(this);
     this.toogleDisplay = this.toogleDisplay.bind(this);
   }
-
-  //Shows and hides the sidebar
-  updateSidebar = () => {
-    let sidebar = document.getElementById("sidebar");
-    let header = document.getElementById("header");
-    let books = document.getElementById("books");
-    let btnSidebar = document.getElementById("btn-sidebar");
-
-    //if its hidden
-    if (sidebar.style.left === "-270px") {
-      //center all components
-      sidebar.style.left = "0";
-      header.style.marginLeft = "270px";
-      books.style.marginLeft = "270px";
-      btnSidebar.style.left = "270px";
-    } else {
-      sidebar.style.left = "-270px";
-      header.style.marginLeft = "0";
-      books.style.marginLeft = "auto";
-      books.style.width = "100%";
-      btnSidebar.style.left = "0";
-    }
-    //change class from light(hidden) to dark(shown)
-    btnSidebar.classList.toggle("btn-sidebar-light");
-  };
 
   //Adds a new book for the user and re renders
   handleSubmit = book => {
@@ -116,19 +92,7 @@ export default class Books extends React.Component {
 
     return (
       <React.Fragment>
-        <Sidebar />
-        {/*Header with the title of the page*/}
-        <div className="header" id="header">
-          <button
-            className="btn-sidebar"
-            id="btn-sidebar"
-            onClick={this.updateSidebar}
-          >
-            <i className="fas fa-bars"></i>
-          </button>
-          <h1>Bookshelf</h1>
-          {this.state.test}
-        </div>
+        <Sidebar title="Bookshelf"/>
 
         {/*Loading and error message when occur*/}
         {this.isLoading() && <Loading />}

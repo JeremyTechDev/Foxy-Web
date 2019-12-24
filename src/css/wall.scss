@@ -1,0 +1,67 @@
+@import "./variable.scss";
+@import url("https://fonts.googleapis.com/css?family=Lato|PT+Sans&display=swap");
+//   font-family: 'PT Sans', sans-serif;
+//   font-family: 'Lato', sans-serif;
+
+.posts-cotainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  margin: 20px auto 0 270px;
+  padding: 0 40px;
+  transition: 0.4s all;
+}
+
+.post {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 700px;
+  margin: 5px 0;
+}
+.post-info {
+  display: flex;
+}
+.post-info-img-container {
+  background: #fff;
+  width: 100px;
+  height: 100px;
+  margin: 7px 15px;
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px solid $dark;
+}
+.post-info-img-container img {
+  height: 100%;
+  width: 100%;
+}
+.post-info-text {
+  display: table;
+  width: 500px;
+  margin: 7px 15px;
+  padding: 15px 0;
+}
+
+.post-content {
+  p {
+    padding: 15px;
+    font-size: 18px;
+  }
+  img {
+    width: 100%;
+  }
+}
+
+.post-actions {
+  padding: 7px;
+  font-size: 30px;
+  color: grey;
+  i {
+    margin: 5px;
+    transition: 0.3s all;
+    &:hover {
+      color: $sec;
+    }
+  }
+  span {
+    float: right;
+  }
+}
