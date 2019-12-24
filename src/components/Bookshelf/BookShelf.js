@@ -1,17 +1,16 @@
 import React from "react";
 import FindBook from "./findBook";
 import BooksGrid from "./BookGrid";
-import Sidebar from "./sidebar";
-import { PostData } from "../services/PostData";
-import { searchBook } from "../api/api";
-import "../css/books.scss";
+import Sidebar from "../../sidebar";
+import { PostData } from "../../services/PostData";
+import "../../css/books.scss";
 
 function Loading() {
   return (
     <table className="center-text loading">
       <tr>
         <td>
-          <img src={require("../images/loading.gif")} alt="" />
+          <img src={require("../../images/loading.gif")} alt="" />
         </td>
       </tr>
     </table>
@@ -28,7 +27,6 @@ export default class Books extends React.Component {
       findBook_Display: false //decides if display findBook
     };
 
-    this.getBooks = this.getBooks.bind(this);
     this.isLoading = this.isLoading.bind(this);
     this.toogleDisplay = this.toogleDisplay.bind(this);
   }
@@ -39,7 +37,6 @@ export default class Books extends React.Component {
     this.setState({
       books: [...this.state.books, book]
     });
-    console.log(this.state.books);
     //Closes and cleans findBook form
     this.toogleDisplay("findBook_Display");
   };
@@ -58,21 +55,6 @@ export default class Books extends React.Component {
     } else {
       return false;
     }
-  }
-
-  //Gets a given book's data from the api 'searchBook' and saves it on the state
-  getBooks(bookToSearch) {
-    searchBook(bookToSearch)
-      .then(data => {
-        this.setState(({ books }) => ({
-          books: [...books, data]
-        }));
-      })
-      .catch(() => {
-        this.setState({
-          error: "There was an error fetching the books."
-        });
-      });
   }
 
   componentDidMount() {
