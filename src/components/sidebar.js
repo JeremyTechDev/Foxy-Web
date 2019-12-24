@@ -2,10 +2,6 @@ import React from "react";
 import "../css/sidebar.scss";
 
 export default class Sidebar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   //Shows and hides the sidebar
   updateSidebar = () => {
     try {
