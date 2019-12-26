@@ -116,6 +116,17 @@
     cursor: pointer;
   }
 }
+.btn-noStyle {
+  font-size: 30px;
+  color: grey;
+  background: none;
+  border: none;
+  display: inline-block;
+  outline: none;
+}
+.noStyle {
+  display: inline-block;
+}
 .add-photo {
   background: none;
   width: 50px;
@@ -132,4 +143,13 @@
   background: $sec;
   color: $light;
   float: right;
+}
+
+.num-likes {
+  font-size: 15px;
+  background: $sec;
+  padding: 1px 5px;
+  color: $light;
+  border-radius: 50px;
+  margin-top: 15px;
 }

@@ -2,10 +2,6 @@ import React from "react";
 import "../css/home.scss";
 
 class FormSignIn extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -38,10 +34,6 @@ class FormSignIn extends React.Component {
 }
 
 class FormSignUp extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -91,12 +83,13 @@ export default class Home extends React.Component {
     super(props);
 
     this.state = {
-      displaySignIn: true
+      displaySignIn: true //display sign in as default
     };
 
     this.toggleDisplay = this.toggleDisplay.bind(this);
   }
 
+  //Changes the view of the sign in and sign up forms
   toggleDisplay() {
     const { displaySignIn } = this.state;
     this.setState({

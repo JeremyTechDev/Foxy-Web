@@ -10,7 +10,7 @@ export default class BooksGrid extends React.Component {
   }
 
   displayRate(rate) {
-    //get num of yellow and grat stars
+    //get num of yellow and gray stars
     let yellowStars = rate;
     let grayStars = 5 - rate;
     

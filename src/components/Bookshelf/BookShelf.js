@@ -1,23 +1,11 @@
 import React from "react";
 import FindBook from "./findBook";
 import BooksGrid from "./BookGrid";
-import Sidebar from "../../sidebar";
+import Sidebar from "../sidebar";
 import { PostData } from "../../services/PostData";
 import "../../css/books.scss";
 
-function Loading() {
-  return (
-    <table className="center-text loading">
-      <tr>
-        <td>
-          <img src={require("../../images/loading.gif")} alt="" />
-        </td>
-      </tr>
-    </table>
-  );
-}
-
-export default class Books extends React.Component {
+export default class Bookshelf extends React.Component {
   constructor(props) {
     super(props);
 
@@ -27,10 +15,9 @@ export default class Books extends React.Component {
       findBook_Display: false //decides if display findBook
     };
 
-    this.isLoading = this.isLoading.bind(this);
     this.toogleDisplay = this.toogleDisplay.bind(this);
   }
-
+  /*
   //Adds a new book for the user and re renders
   handleSubmit = book => {
     //Add the new book to the books state
@@ -40,33 +27,21 @@ export default class Books extends React.Component {
     //Closes and cleans findBook form
     this.toogleDisplay("findBook_Display");
   };
-
-  //Shows or hides the key form
+  */
+  //Shows or hides the key form component
   toogleDisplay(key) {
     this.setState({ [key]: !this.state[key] });
   }
 
-  //Returns true if the page is still fetching books
-  isLoading() {
-    const { error, books } = this.state;
-
-    if (error == null && books.length === 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+  //Looks up for all books in the DB and store it in the state array
   componentDidMount() {
-    PostData("selectAllBooks", {})
-      .then(res => {
-        res.allBooks.forEach(book => {
-          console.log(book);
-          this.setState({
-            books: [...this.state.books, book]
-          })
-        })
-      })
+    PostData("selectAllBooks", {}).then(res => {
+      res.allBooks.forEach(book => {
+        this.setState({
+          books: [...this.state.books, book]
+        });
+      });
+    });
   }
 
   render() {
@@ -74,17 +49,12 @@ export default class Books extends React.Component {
 
     return (
       <React.Fragment>
-        <Sidebar title="Bookshelf"/>
+        <Sidebar title="Bookshelf" />
 
-        {/*Loading and error message when occur*/}
-        {this.isLoading() && <Loading />}
         {error && <h4>{error}</h4>}
 
         {/*All the user books on cotainers*/}
-        <BooksGrid
-          books={books}
-          toogleDisplay={() => this.toogleDisplay("rateBook_Display")}
-        />
+        <BooksGrid books={books} />
 
         {/*Button to display findBook*/}
         {!findBook_Display && (

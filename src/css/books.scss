@@ -77,6 +77,10 @@
   transition: 0.3s all;
   font-size: 18px;
   outline: 0;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.75;
+  }
 }
 
 .btn-toggle-AddBook {
@@ -102,11 +106,6 @@
 .btn-Online {
   margin: 0 auto;
   float: none;
-}
-
-.btn:hover {
-  cursor: pointer;
-  opacity: 0.75;
 }
 
 .form-AddBook {
@@ -136,10 +135,9 @@
   margin: 10px auto;
   text-decoration: underline;
   font-family: "PT Sans", sans-serif;
-
-}
-.a:hover {
-  color: royalblue;
+  &:hover {
+    color: royalblue;
+  }
 }
 
 .img-addBook {
@@ -149,10 +147,9 @@
   max-width: 102px;
   max-height: 201px;
   transition: 0.2s all;
-}
-
-.img-addBook:hover {
-  transform: scale(1.05);
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
 .inp {
@@ -168,13 +165,10 @@
   display: none;
 }
 
-.form-btnAdd:hover {
-  opacity: 0.8;
-}
-
 .h3-rating {
   margin-top: 5px;
 }
+
 .rating {
   margin: -15px auto 0px auto;
   direction: rtl;

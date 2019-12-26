@@ -1,3 +1,4 @@
+//returns the actual date on string format (MM dd, YYYY)
 export function getDate() {
   const months = [
     "Jan",

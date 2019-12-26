@@ -1,7 +1,8 @@
 import React from "react";
-import { PostData } from "../services/PostData";
-import { searchBook } from "../api/api";
+import { PostData } from "../../services/PostData";
+import { searchBook } from "../../api/api";
 
+//If no rating when submit, show this error
 class ShowErrorOnRating extends React.Component {
   render() {
     return <p style={{ color: "red" }}>Please insert your rating.</p>;
@@ -16,7 +17,6 @@ export default class FindBook extends React.Component {
 
     this.state = {
       book: {
-        //all data needed of the book
         title: null,
         authors: null,
         categories: null,
@@ -29,9 +29,9 @@ export default class FindBook extends React.Component {
     };
 
     this.toogle_Display = this.toogle_Display.bind(this);
-    this.insertBook = this.insertBook.bind(this);
   }
 
+  //set the given rating to the book
   setRating(rate) {
     this.setState({
       book: {
@@ -41,6 +41,7 @@ export default class FindBook extends React.Component {
     });
   }
 
+  //Changes view between online search and manually add the book
   toogle_Display() {
     const { displaySearchOnline } = this.state;
     this.setState({ displaySearchOnline: !displaySearchOnline });
@@ -48,10 +49,11 @@ export default class FindBook extends React.Component {
 
   //runs when user search a book online after submiting
   handleSearch = () => {
+    //Searchs the book and store data on state
     searchBook(this.state.book.title).then(data => {
       this.setState({ book: data });
     });
-
+    //Goes back to manually add book with the data found online
     this.toogle_Display();
   };
 
@@ -64,7 +66,9 @@ export default class FindBook extends React.Component {
       this.setState({ showErrorOnRating: !this.state.showErrorOnRating });
       return false;
     } else {
-      this.props.onSubmit(this.state.book);
+      //this.props.onSubmit(this.state.book);
+      //save new book on DB
+      PostData("insertBook", this.state.book);
     }
   };
 
@@ -78,10 +82,6 @@ export default class FindBook extends React.Component {
     });
   };
 
-  insertBook() {
-    PostData("insertBook", this.state.book);
-  }
-
   render() {
     const { displaySearchOnline, showErrorOnRating } = this.state;
 
@@ -91,7 +91,7 @@ export default class FindBook extends React.Component {
 
         {/*MANUALLY ADDED (default)*/}
         {!displaySearchOnline && (
-          <form onSubmit={this.insertBook}>
+          <form onSubmit={this.handleSubmit}>
             <button
               type="button"
               className="btn-searchOnline btn"
