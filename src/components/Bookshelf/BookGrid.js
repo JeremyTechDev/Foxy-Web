@@ -13,9 +13,9 @@ export default class BooksGrid extends React.Component {
     //get num of yellow and gray stars
     let yellowStars = rate;
     let grayStars = 5 - rate;
-    
-    yellowStars = "★".repeat(yellowStars)
-    grayStars = "★".repeat(grayStars)
+
+    yellowStars = "★".repeat(yellowStars);
+    grayStars = "★".repeat(grayStars);
 
     return (
       <h3 className="book-rate">
@@ -29,23 +29,13 @@ export default class BooksGrid extends React.Component {
     return (
       <div className="books" id="books">
         {this.props.books.map(book => {
-          const {
-            title,
-            authors,
-            publishedDate,
-            img,
-            categories,
-            rate
-          } = book;
+          const { title, authors, img, categories, rate } = book;
 
           return (
             <div className="book-container">
               <img alt="Book Cover" className="book-img" src={img} />
               <div className="book-info">
-                <h6 className="book-category">
-                  {categories}
-                  <span className="book-release">{publishedDate}</span>
-                </h6>
+                <h6 className="book-category">{categories}</h6>
                 <h2 className="book-title">{title}</h2>
                 <h5 className="book-author">by {authors}</h5>
                 {this.displayRate(rate)}

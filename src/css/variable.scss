@@ -1,5 +1,12 @@
 //Primary Colors
-$light: #ECE1CB;
-$pri: #C46500;
-$sec: #ED960B;
-$dark: #1B0C04;
+$light: rgba(239,227,211,1);
+$light-op: rgba(239,227,211,0.8);
+
+$pri: rgba(237,150,11,1);
+$pri-op: rgba(237,150,11,0.8);
+
+$sec: rgba(225,70,40,1);
+$sec-op: rgba(225,70,40,0.8);
+
+$dark: rgba(65,37,36,1);
+$dark-op: rgba(65,37,36,0.8);

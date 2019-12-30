@@ -6,6 +6,7 @@ import "./css/index.scss";
 const Home = React.lazy(() => import("./components/home"));
 const BookShelf = React.lazy(() => import("./components/Bookshelf/BookShelf"));
 const Wall = React.lazy(() => import("./components/Wall/wall"));
+const Profile = React.lazy(() => import("./components/Profile/Profile"));
 
 class App extends React.Component {
   render() {
@@ -17,6 +18,7 @@ class App extends React.Component {
               <Route exact path="/" component={Home} />
               <Route exact path="/bookshelf" component={BookShelf} />
               <Route exact path="/wall" component={Wall} />
+              <Route exact path="/profile" component={Profile} />
               <Route render={() => <h1>404</h1>} />
             </Switch>
           </React.Suspense>

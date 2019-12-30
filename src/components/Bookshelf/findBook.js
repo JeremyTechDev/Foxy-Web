@@ -9,6 +9,33 @@ class ShowErrorOnRating extends React.Component {
   }
 }
 
+class EmptyBookBox extends React.Component {
+  render() {
+    const { booksSearchedOnline } = this.props;
+    return booksSearchedOnline.map(book => {
+      return (
+        <button
+          onClick={() => {
+            this.props.handleBookChoice(book);
+          }}
+          className="book-box"
+        >
+          <div className="book-box">
+            <div className="book-box-img">
+              <img alt="" src={book.image} />
+            </div>
+
+            <div className="book-box-info">
+              <h4>{book.title}</h4>
+              <h5 className="box-author">by {book.authors}</h5>
+            </div>
+          </div>
+        </button>
+      );
+    });
+  }
+}
+
 //Show form to find book online by name or ISBN
 //PARAMETHERS: toogleFrom to close form & onSubmit to send input value to default class
 export default class FindBook extends React.Component {
@@ -16,19 +43,14 @@ export default class FindBook extends React.Component {
     super(props);
 
     this.state = {
-      book: {
-        title: null,
-        authors: null,
-        categories: null,
-        image: null,
-        isbn: null,
-        rating: null
-      },
-      displaySearchOnline: false, //decides to show online search with api
+      book: {},
+      booksSearchedOnline: [],
+      displaySearchOnline: true, //decides to show online search with api
       showErrorOnRating: false
     };
 
     this.toogle_Display = this.toogle_Display.bind(this);
+    this.handleBookChoice = this.handleBookChoice.bind(this);
   }
 
   //set the given rating to the book
@@ -47,14 +69,21 @@ export default class FindBook extends React.Component {
     this.setState({ displaySearchOnline: !displaySearchOnline });
   }
 
+  //set the book chose by the user un the book key state
+  handleBookChoice(choice) {
+    this.setState({
+      book: choice
+    });
+
+    this.toogle_Display();
+  }
+
   //runs when user search a book online after submiting
   handleSearch = () => {
     //Searchs the book and store data on state
     searchBook(this.state.book.title).then(data => {
-      this.setState({ book: data });
+      this.setState({ booksSearchedOnline: data });
     });
-    //Goes back to manually add book with the data found online
-    this.toogle_Display();
   };
 
   //runs when user submit the main form
@@ -66,9 +95,9 @@ export default class FindBook extends React.Component {
       this.setState({ showErrorOnRating: !this.state.showErrorOnRating });
       return false;
     } else {
-      //this.props.onSubmit(this.state.book);
       //save new book on DB
       PostData("insertBook", this.state.book);
+      window.location.reload();
     }
   };
 
@@ -83,79 +112,46 @@ export default class FindBook extends React.Component {
   };
 
   render() {
-    const { displaySearchOnline, showErrorOnRating } = this.state;
+    const {
+      book,
+      displaySearchOnline,
+      showErrorOnRating,
+      booksSearchedOnline
+    } = this.state;
 
     return (
       <div className="form-AddBook">
-        <h2>ADD A BOOK</h2>
+        <h2>SEARCH A BOOK</h2>
 
         {/*MANUALLY ADDED (default)*/}
         {!displaySearchOnline && (
           <form onSubmit={this.handleSubmit}>
-            <button
-              type="button"
-              className="btn-searchOnline btn"
-              onClick={this.toogle_Display}
-            >
-              Search Online
+            <button className="btn-SearchAgain" onClick={this.toogle_Display}>
+              Search another book
             </button>
-            <br />
 
-            <h4>or</h4>
-
-            <div className="cover-upload">
-              <label htmlFor="file-upload">
-                <img
-                  className="img-addBook"
-                  id="book-cover"
-                  src={this.state.book.image}
-                  alt="Book Cover"
-                />
-              </label>
-
-              <input
-                type="file"
-                id="file-upload"
-              />
-            </div>
+            <img
+              className="img-addBook"
+              src={this.state.book.image}
+              alt="Book Cover"
+            />
 
             {showErrorOnRating && <ShowErrorOnRating />}
 
-            <input
-              className="inp"
-              autoComplete="off"
-              type="text"
-              id="fssss"
-              maxLength="100"
-              placeholder="Title*"
-              name="title"
-              value={this.state.book.title}
-              onChange={this.handleChange("title")}
-              required
-            />
+            <div className="div-label">
+              <input className="inp" value={book.title} disabled />
+              <label>Title</label>
+            </div>
 
-            <input
-              className="inp"
-              autoComplete="off"
-              type="text"
-              placeholder="Author*"
-              maxLength="50"
-              name="authors"
-              value={this.state.book.authors}
-              onChange={this.handleChange("authors")}
-              required
-            />
+            <div className="div-label">
+              <input className="inp" value={book.authors} disabled />
+              <label>Author</label>
+            </div>
 
-            <input
-              className="inp"
-              autoComplete="off"
-              type="text"
-              maxLength="50"
-              placeholder="Categories"
-              name="categories"
-              value={this.state.book.categories}
-              onChange={this.handleChange("categories")}
-            />
+            <div className="div-label">
+              <input className="inp" value={book.categories} disabled />
+              <label>Categories</label>
+            </div>
 
             <h3 className="h3-rating">Rating:</h3>
             <div className="rating">
@@ -200,6 +196,7 @@ export default class FindBook extends React.Component {
               type="submit"
               className="btn-AddBook btn"
               disabled={!this.state.book}
+              onClick={this.handleSubmit}
             >
               Add book
             </button>
@@ -208,11 +205,7 @@ export default class FindBook extends React.Component {
 
         {/*ONLINE SEARCH*/}
         {displaySearchOnline && (
-          <form onSubmit={this.handleSearch}>
-            <span className="a" onClick={this.toogle_Display}>
-              Go back to Add Book manually
-            </span>
-
+          <React.Fragment>
             <input
               className="inp"
               autoComplete="off"
@@ -221,17 +214,24 @@ export default class FindBook extends React.Component {
               name="title"
               value={this.state.title}
               onChange={this.handleChange("title")}
-              required
             />
 
             <button
-              type="submit"
-              className="btn-AddBook btn-Online btn"
-              disabled={!this.state}
+              type="button"
+              className="btn-SearchBook btn"
+              disabled={!this.state.book.title}
+              onClick={this.handleSearch}
             >
-              Add book
+              Search book
             </button>
-          </form>
+
+            {booksSearchedOnline.length !== 0 && (
+              <EmptyBookBox
+                booksSearchedOnline={booksSearchedOnline}
+                handleBookChoice={this.handleBookChoice}
+              />
+            )}
+          </React.Fragment>
         )}
 
         <button

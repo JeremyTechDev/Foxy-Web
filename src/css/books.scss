@@ -9,56 +9,52 @@
 
 /***********************************/
 /*******  BOOK GRID  *******/
-
 .books {
   display: flex;
   flex-wrap: wrap;
-  width: 80%;
-  margin: 0 auto 0 270px;
+  width: 100%;
+  margin: 100px auto;
   padding: 0 40px;
   transition: 0.4s all;
 }
 .book-container {
-  background-color: $light;
-  padding: 20px;
   display: flex;
-  margin: 20px auto 20px 2rem;
-  min-width: 450px;
-  max-width: 480px;
-  max-height: 300px;
-  box-shadow: 0 1.4rem 2rem rgba(0, 0, 0, 0.3);
+  align-items: center;
+  margin: 10px auto;
   border-radius: 10px;
-  img {
-    border-radius: 10px;
-    display: block;
-    min-height:100%;
-    min-width: 180px;
-    max-width: 20px;
-    transform: translateX(-3rem);
-  }
+}
+.book-img {
+  display: flex;
+  align-items: center;
+  height: 220px;
+  background-color: $pri;
+  z-index: 1;
+  transform: translateX(60px);
+  border-radius: 10px;
 }
 .book-info {
-  margin: auto 0 auto -2rem;
+  background-color: #101820ff;
+  width: 380px;
+  height: 200px;
+  padding: 5px 15px 5px 70px;
+  margin: 20px auto;
+  color: $light;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   overflow: hidden;
   line-clamp: 3;
   box-orient: vertical;
   .book-title {
     color: $pri;
   }
-  .book-author {
-    color: $dark;
-  }
-  .book-release {
-    color: $dark;
-  }
-  .book-release {
-    color: $dark;
-    float: right;
-  }
   .book-rate {
     color: #f1c40f;
     font-size: 40px !important;
-    margin: 5px auto;
+    margin: 5px 0;
     span {
       color: gray;
     }
@@ -77,10 +73,7 @@
   transition: 0.3s all;
   font-size: 18px;
   outline: 0;
-  &:hover {
-    cursor: pointer;
-    opacity: 0.75;
-  }
+  cursor: pointer;
 }
 
 .btn-toggle-AddBook {
@@ -89,23 +82,37 @@
   right: 20px;
   width: 130px;
   background: $pri;
-}
-
-.btn-searchOnline {
-  background: $sec;
-  margin: 10px;
+  &:hover {
+    background-color: $pri-op;
+  }
 }
 
 .btn-AddBook {
   float: left;
-  background-color: #4caf50;
+  background-color: $sec;
   margin: 10px auto -22px -22px;
   width: 185px;
+  &:hover {
+    background-color: $sec-op;
+  }
 }
 
-.btn-Online {
+.btn-SearchBook {
+  background-color: $sec;
   margin: 0 auto;
-  float: none;
+  &:hover {
+    background-color: $sec-op;
+  }
+}
+
+.btn-SearchAgain {
+  background: none;
+  border: none;
+  color: $sec;
+  text-decoration: underline;
+  &:hover {
+    color: $pri;
+  }
 }
 
 .form-AddBook {
@@ -130,35 +137,39 @@
   border-radius: 10px;
 }
 
-.a {
-  display: block;
-  margin: 10px auto;
-  text-decoration: underline;
-  font-family: "PT Sans", sans-serif;
-  &:hover {
-    color: royalblue;
-  }
-}
-
 .img-addBook {
   border-radius: 10px;
   display: block;
-  margin: 0 auto;
+  margin: 10px auto;
   max-width: 102px;
   max-height: 201px;
-  transition: 0.2s all;
-  &:hover {
-    transform: scale(1.05);
-  }
 }
 
 .inp {
-  width: 90%;
-  border: none;
-  border-bottom: 2px solid $sec;
-  font-size: 18px;
   margin: 10px;
-  padding: 5px 10px;
+  width: 80%;
+  font-family: "Lato", sans-serif;
+  background: none;
+  color: $dark;
+  border: none;
+  border-bottom: 3px solid $pri;
+  font-size: 18px;
+  outline: none;
+}
+
+.form-AddBook form {
+  .div-label {
+    position: relative;
+    label {
+      position: absolute;
+      top: -7px;
+      left: 10%;
+      color: $pri;
+      font-weight: bold;
+      transition: 0.3s;
+      pointer-events: none;
+    }
+  }
 }
 
 #file-upload {
@@ -170,16 +181,18 @@
 }
 
 .rating {
-  margin: -15px auto 0px auto;
+  margin: -25px auto 0px auto;
   direction: rtl;
 }
 .star {
+  margin: 0;
+  padding: 0;
   font-size: 50px;
   color: #313131;
   transition: 0.3s all;
   border: none;
   background: none;
-  outline: 0;
+  outline: none;
 }
 .star:hover {
   color: #f1c40f;
@@ -198,4 +211,44 @@
 }
 .star5:hover ~ button {
   color: #f1c40f;
+}
+
+
+
+/****BOOK BOX****/
+.book-box {
+  display: flex;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  background: none;
+  width: 100%;
+  height: 120px;
+  margin-bottom: 10px;
+  transition: .3s all;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.03);
+  }
+}
+.book-box-img {
+  height: 100%;
+  width: 80px;
+  img {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+  }
+}
+.book-box-info {
+  padding: 0 10px;
+  width: calc(100% - 80px);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  h5 {
+    color: $pri;
+    font-weight: 900;
+  }
 }

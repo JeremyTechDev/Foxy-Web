@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../sidebar";
+import Header from "../Header";
 import WallGrid from "./WallGrid";
 import MakePost from "./MakePost";
 import "../../css/wall.scss";
@@ -30,7 +30,7 @@ export default class Wall extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Sidebar title="Wall" />
+        <Header title="Wall" />
         <div className="posts-cotainer">
           <MakePost />
           <WallGrid

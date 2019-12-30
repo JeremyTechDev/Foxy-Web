@@ -1,7 +1,7 @@
 import React from "react";
 import FindBook from "./findBook";
 import BooksGrid from "./BookGrid";
-import Sidebar from "../sidebar";
+import Header from "../Header";
 import { PostData } from "../../services/PostData";
 import "../../css/books.scss";
 
@@ -17,17 +17,7 @@ export default class Bookshelf extends React.Component {
 
     this.toogleDisplay = this.toogleDisplay.bind(this);
   }
-  /*
-  //Adds a new book for the user and re renders
-  handleSubmit = book => {
-    //Add the new book to the books state
-    this.setState({
-      books: [...this.state.books, book]
-    });
-    //Closes and cleans findBook form
-    this.toogleDisplay("findBook_Display");
-  };
-  */
+
   //Shows or hides the key form component
   toogleDisplay(key) {
     this.setState({ [key]: !this.state[key] });
@@ -49,7 +39,7 @@ export default class Bookshelf extends React.Component {
 
     return (
       <React.Fragment>
-        <Sidebar title="Bookshelf" />
+        <Header />
 
         {error && <h4>{error}</h4>}
 
