@@ -1,0 +1,109 @@
+@import "./variable.scss";
+@import url("https://fonts.googleapis.com/css?family=Lato|Merienda+One|Montserrat|PT+Sans|Parisienne&display=swap");
+// Titles font-family: 'PT Sans', sans-serif;
+// Bodies font-family: 'Lato', sans-serif;
+// Logo font-family: 'Merienda One', cursive;
+// Cursi font-family: 'Parisienne', cursive;
+// Header font-family: 'Montserrat', sans-serif;
+.groups {
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+}
+.group-container {
+  position: relative;
+  margin: 10px 20px;
+  background: $gray;
+  width: 350px;
+  height: 470px;
+  border-radius: 15px;
+  text-align: center;
+  transition: 0.3s all;
+  img {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+.group-info {
+  .gr-popularity {
+    color: $pri;
+  }
+  .gr-name {
+    font-family: "PT Sans", sans-serif;
+  }
+  .gr-description {
+    padding: 15px;
+    font-weight: 300;
+  }
+}
+.group-stats {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  background-color: $pri;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  div {
+    width: calc(100% / 3);
+    padding: 15px;
+    font-size: 14px;
+    span {
+      font-weight: 900;
+      font-size: 22px;
+    }
+    &:nth-child(2) {
+      border-left: 2px solid rgba(0, 0, 0, 0.1);
+      border-right: 2px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+.create-group {
+  img {
+    max-width: 80%;
+    border-radius: 10px;
+    margin: 10px auto 0;
+    transition: 0.3s all;
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+  p {
+    margin: 0px auto 10px;
+    font-weight: 900;
+  }
+}
+
+.form-AddGroup {
+  .div-label {
+    position: relative;
+    label {
+      position: absolute;
+      top: -7px;
+      left: 10%;
+      font-weight: bold;
+      transition: 0.3s;
+      pointer-events: none;
+    }
+    textarea {
+      resize: vertical;
+    }
+  }
+}
+.btn-toggle-AddGroup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+.btn-create {
+  background: $sec;
+  margin: 0px auto 20px;
+  &:hover {
+    background-color: $sec-op;
+  }
+}

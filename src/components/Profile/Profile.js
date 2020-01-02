@@ -1,29 +1,149 @@
 import React from "react";
 import Header from "../Header";
 import "../../css/profile.scss";
+import WallGrid from "../Wall/WallGrid";
+import "../../css/wall.scss";
+import BooksGrid from "../Bookshelf/BookGrid";
+import "../../css/books.scss";
+import GroupsGrid from "../Groups/GroupsGrid";
+import "../../css/groups.scss";
+import { PostData } from "../../services/PostData";
+
+class TabList extends React.Component {
+  render() {
+    return (
+      <div className="tablist">
+        <div
+          onClick={() => {
+            this.props.toggleTab("posts-tab");
+          }}
+          id="posts-tab"
+          className="tab tab-selected"
+        >
+          Posts
+        </div>
+        <div
+          onClick={() => {
+            this.props.toggleTab("bookshelf-tab");
+          }}
+          id="bookshelf-tab"
+          className="tab"
+        >
+          Bookshelf
+        </div>
+        <div
+          onClick={() => {
+            this.props.toggleTab("groups-tab");
+          }}
+          id="groups-tab"
+          className="tab"
+        >
+          Groups
+        </div>
+        <div
+          onClick={() => {
+            this.props.toggleTab("saved-tab");
+          }}
+          id="saved-tab"
+          className="tab"
+        >
+          Saved
+        </div>
+      </div>
+    );
+  }
+}
 
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      displayPosts: true
+      tab: "posts-tab", //displayed tab
+      posts: [],
+      books: [],
+      groups: [],
+      savedPosts: []
     };
 
     this.toggleTab = this.toggleTab.bind(this);
   }
 
+  componentDidMount() {
+    //gets all posts info
+    PostData("selectAllPosts", {}).then(res => {
+      res.allPosts.forEach(post => {
+        PostData("checkIfLiked", post).then(liked => {
+          post["likedByUser"] = liked.result;
+          PostData("checkIfSaved", post).then(saved => {
+            post["savedByUser"] = saved.result;
+            PostData("selectAllPostComments", post).then(comments => {
+              post["comments"] = [];
+              comments.allPostComments.forEach(comment => {
+                post["comments"] = [...post.comments, comment];
+              });
+              this.setState({
+                posts: [...this.state.posts, post]
+              });
+            });
+          });
+        });
+      });
+    });
+    //gets all books info
+    PostData("selectAllBooks", {}).then(res => {
+      res.allBooks.forEach(book => {
+        this.setState({
+          books: [...this.state.books, book]
+        });
+      });
+    });
+    //get all saved posts
+    PostData("selectAllPosts", {}).then(res => {
+      res.allPosts.forEach(post => {
+        PostData("checkIfSaved", post).then(e => {
+          if (e.result) {
+            this.setState({ savedPosts: [...this.state.savedPosts, post] });
+          }
+          post["savedByUser"] = e.result;
+          PostData("checkIfLiked", post).then(saved => {
+            post["likedByUser"] = saved.result;
+            PostData("selectAllPostComments", post).then(comments => {
+              post["comments"] = [];
+              comments.allPostComments.forEach(comment => {
+                post["comments"] = [...post.comments, comment];
+              });
+            });
+          });
+        });
+      });
+    });
+    //gets all groups info
+    PostData("selectUserGroups", {}).then(res => {
+      res.userGroups.forEach(group => {
+        this.setState({
+          groups: [...this.state.groups, group]
+        });
+      });
+    });
+  }
+
   //Changes the view between posts and saved
   toggleTab(tab) {
-    tab = document.getElementById(tab);
-    if (!tab.classList.contains("tab-selected")) {
-      document.getElementById("posts-tab").classList.toggle("tab-selected");
-      document.getElementById("saved-tab").classList.toggle("tab-selected");
-      this.setState({displayPosts: !this.state.displayPosts});
-    }
+    //Update the view
+    this.setState({ tab: tab });
+    //Remove the tab-selected to all the tabs
+    tab = document.getElementById(tab).classList;
+    document.getElementById("posts-tab").classList.remove("tab-selected");
+    document.getElementById("bookshelf-tab").classList.remove("tab-selected");
+    document.getElementById("groups-tab").classList.remove("tab-selected");
+    document.getElementById("saved-tab").classList.remove("tab-selected");
+    //Add the class to the tab
+    tab.add("tab-selected");
   }
 
   render() {
+    const { tab } = this.state;
     return (
       <React.Fragment>
         <Header />
@@ -50,28 +170,36 @@ export default class Profile extends React.Component {
               100 <span>Following </span>
             </h3>
           </div>
-          <div className="tablist">
-            <div
-              onClick={() => {
-                this.toggleTab("posts-tab");
-              }}
-              id="posts-tab"
-              className="tab tab-selected"
-            >
-              Posts
-            </div>
-            <div
-              onClick={() => {
-                this.toggleTab("saved-tab");
-              }}
-              id="saved-tab"
-              className="tab"
-            >
-              Saved
-            </div>
-          </div>
+          <TabList toggleTab={this.toggleTab} />
         </div>
-        {this.state.displayPosts && <div className="test"></div>}
+        {tab === "posts-tab" && (
+          <div className="tab-body">
+            <span>
+              <WallGrid posts={this.state.posts} />
+            </span>
+          </div>
+        )}
+        {tab === "bookshelf-tab" && (
+          <div className="tab-body">
+            <span>
+              <BooksGrid books={this.state.books} />
+            </span>
+          </div>
+        )}
+        {tab === "groups-tab" && (
+          <div className="tab-body">
+            <span>
+              <GroupsGrid groups={this.state.groups} />
+            </span>
+          </div>
+        )}
+        {tab === "saved-tab" && (
+          <div className="tab-body">
+            <span>
+              <WallGrid posts={this.state.savedPosts} />
+            </span>
+          </div>
+        )}
       </React.Fragment>
     );
   }

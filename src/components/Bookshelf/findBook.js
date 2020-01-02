@@ -9,9 +9,11 @@ class ShowErrorOnRating extends React.Component {
   }
 }
 
-class EmptyBookBox extends React.Component {
+//Displays three book result of the user's search in small box,
+//The user then chooses one of them with click
+class BookBox extends React.Component {
   render() {
-    const { booksSearchedOnline } = this.props;
+    const { booksSearchedOnline } = this.props; //3 api result books
     return booksSearchedOnline.map(book => {
       return (
         <button
@@ -75,7 +77,7 @@ export default class FindBook extends React.Component {
       book: choice
     });
 
-    this.toogle_Display();
+    this.toogle_Display(); //change display form
   }
 
   //runs when user search a book online after submiting
@@ -97,7 +99,7 @@ export default class FindBook extends React.Component {
     } else {
       //save new book on DB
       PostData("insertBook", this.state.book);
-      window.location.reload();
+      window.location.reload(); //refresh page
     }
   };
 
@@ -120,7 +122,7 @@ export default class FindBook extends React.Component {
     } = this.state;
 
     return (
-      <div className="form-AddBook">
+      <div className="form-AddBook corner-popup">
         <h2>SEARCH A BOOK</h2>
 
         {/*MANUALLY ADDED (default)*/}
@@ -226,7 +228,7 @@ export default class FindBook extends React.Component {
             </button>
 
             {booksSearchedOnline.length !== 0 && (
-              <EmptyBookBox
+              <BookBox
                 booksSearchedOnline={booksSearchedOnline}
                 handleBookChoice={this.handleBookChoice}
               />

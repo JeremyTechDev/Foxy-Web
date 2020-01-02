@@ -5,7 +5,9 @@
 // Logo font-family: 'Merienda One', cursive;
 // Cursi font-family: 'Parisienne', cursive;
 // Header font-family: 'Montserrat', sans-serif;
-
+::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
 .profile {
   margin: 120px auto 0;
   width: 40%;
@@ -16,7 +18,6 @@
     height: 250px;
   }
 }
-
 .profile-img {
   max-width: 150px;
   max-height: 150px;
@@ -27,9 +28,6 @@
 }
 .profile-info {
   margin: 0px 20px;
-  h5 {
-    color: $dark-op;
-  }
   h4 {
     margin: 5px 0;
     font-weight: 300;
@@ -41,32 +39,35 @@
     }
   }
 }
-
 .tablist {
-    width: 100%;
-    height: 50px;
-    margin: 5px 0;
-    text-align: center;
+  width: 100%;
+  height: 50px;
+  margin: 5px auto;
+  text-align: center;
 }
 .tab {
-    display: inline-block;
-    width: 50%;
-    font-size: 25px;
-    color: gray;
-    padding-top: 15px;
-    border-bottom: 2px solid gray;
-    transition: .2s all;
-    &:hover {
-        background: rgba(225,70,40,0.2);
-    }
+  display: inline-block;
+  width: calc(100% / 4); //num of tabs
+  font-size: 25px;
+  color: gray;
+  padding-top: 15px;
+  border-bottom: 2px solid gray;
+  transition: 0.2s all;
+  &:hover {
+    background: rgba(237,150,11,0.1);
+  }
 }
 .tab-selected {
-    color: $sec;
-    border-color: $sec;
+  color: $pri;
+  border-color: $pri;
 }
-
-.test {
-    width: 150px;
-    height: 150px;
-    background-color: red;
+.tab-body {
+  width: 100%;
+  display: block;
+  padding: 0;
+  text-align: center;
+  span {
+    display: inline-block;
+    text-align: left;
+  }
 }

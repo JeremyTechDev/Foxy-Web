@@ -2,18 +2,14 @@
 @import url("https://fonts.googleapis.com/css?family=Lato|PT+Sans&display=swap");
 //   font-family: 'PT Sans', sans-serif;
 //   font-family: 'Lato', sans-serif;
-
 ::placeholder {
   color: $dark !important;
 }
-
-/***********************************/
-/*******  BOOK GRID  *******/
 .books {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  margin: 100px auto;
+  margin: 0 auto;
   padding: 0 40px;
   transition: 0.4s all;
 }
@@ -27,24 +23,20 @@
   display: flex;
   align-items: center;
   height: 220px;
-  background-color: $pri;
   z-index: 1;
   transform: translateX(60px);
   border-radius: 10px;
 }
 .book-info {
-  background-color: #101820ff;
-  width: 380px;
+  background-color: $gray;
+  width: 370px;
   height: 200px;
   padding: 5px 15px 5px 70px;
   margin: 20px auto;
-  color: $light;
   border-radius: 10px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   overflow: hidden;
   line-clamp: 3;
   box-orient: vertical;
@@ -60,43 +52,35 @@
     }
   }
 }
-
-/***********************************/
 /*******  ADD BOOK *******/
-.btn {
-  border: none;
-  padding: 5px 20px;
-  text-align: center;
-  font-family: "PT Sans", sans-serif;
-  border-radius: 10px;
-  color: $light;
-  transition: 0.3s all;
-  font-size: 18px;
-  outline: 0;
-  cursor: pointer;
-}
-
 .btn-toggle-AddBook {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 130px;
-  background: $pri;
+}
+.btn-add-book {
+  width: 40%;
+  display: block;
+  margin: 0 auto;
+  padding: 10px 0;
+  border: none;
+  background: none;
+  font-size: 20px;
+  color: $pri;
+  transition: .2s all;
+  outline: none;
   &:hover {
-    background-color: $pri-op;
+    background-color: rgba(237,150,11,0.1);
   }
 }
-
 .btn-AddBook {
   float: left;
   background-color: $sec;
   margin: 10px auto -22px -22px;
-  width: 185px;
   &:hover {
     background-color: $sec-op;
   }
 }
-
 .btn-SearchBook {
   background-color: $sec;
   margin: 0 auto;
@@ -104,39 +88,20 @@
     background-color: $sec-op;
   }
 }
-
 .btn-SearchAgain {
   background: none;
   border: none;
-  color: $sec;
+  color: $pri;
   text-decoration: underline;
   &:hover {
-    color: $pri;
+    color: $sec;
   }
 }
-
-.form-AddBook {
-  display: block;
-  position: fixed;
-  width: 25%;
-  min-height: 45%;
-  bottom: 12px;
-  right: 12px;
-  padding: 30px;
-  z-index: 15;
-  border-radius: 10px;
-  box-shadow: 0 1.4rem 2rem rgba(0, 0, 0, 0.4);
-  transition: 0.3s all;
-  text-align: center;
-  background: rgba(255,255,255,0.8);
-}
-
 .form-AddBook form {
   width: 100%;
   height: 100%;
   border-radius: 10px;
 }
-
 .img-addBook {
   border-radius: 10px;
   display: block;
@@ -144,19 +109,6 @@
   max-width: 102px;
   max-height: 201px;
 }
-
-.inp {
-  margin: 10px;
-  width: 80%;
-  font-family: "Lato", sans-serif;
-  background: none;
-  color: $dark;
-  border: none;
-  border-bottom: 3px solid $pri;
-  font-size: 18px;
-  outline: none;
-}
-
 .form-AddBook form {
   .div-label {
     position: relative;
@@ -171,24 +123,18 @@
     }
   }
 }
-
-#file-upload {
-  display: none;
-}
-
 .h3-rating {
   margin-top: 5px;
 }
-
 .rating {
   margin: -25px auto 0px auto;
   direction: rtl;
 }
 .star {
-  margin: 0;
+  margin: 5px 0 0;
   padding: 0;
   font-size: 50px;
-  color: #313131;
+  color: grey;
   transition: 0.3s all;
   border: none;
   background: none;
@@ -212,9 +158,6 @@
 .star5:hover ~ button {
   color: #f1c40f;
 }
-
-
-
 /****BOOK BOX****/
 .book-box {
   display: flex;
@@ -242,7 +185,7 @@
 }
 .book-box-info {
   padding: 0 10px;
-  width: calc(100% - 80px);
+  width: calc(100% - 80px); //img width
   text-align: left;
   display: flex;
   flex-direction: column;

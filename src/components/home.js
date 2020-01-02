@@ -5,7 +5,7 @@ class FormSignIn extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div className="form">
+        <div className="form-sign">
           <h1>Foxy</h1>
           <form>
             <div>
@@ -18,7 +18,7 @@ class FormSignIn extends React.Component {
               <label>Password</label>
             </div>
 
-            <button className="sign">Sign In</button>
+            <button className="btn-sign">Sign In</button>
 
             <button className="forgot">Forgot your password?</button>
           </form>
@@ -37,7 +37,7 @@ class FormSignUp extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div className="form">
+        <div className="form-sign">
           <h1>Foxy</h1>
           <form>
             <div>
@@ -65,7 +65,7 @@ class FormSignUp extends React.Component {
               <label>Verify password</label>
             </div>
 
-            <button className="sign">Sign Up</button>
+            <button className="btn-sign">Sign Up</button>
           </form>
         </div>
 
@@ -114,12 +114,9 @@ export default class Home extends React.Component {
           <img alt="" src={require("../images/FOXY_LOGO.png")} />
         </div>
         <div className="right">
-          {this.state.displaySignIn && (
+          {(this.state.displaySignIn && (
             <FormSignIn toogleDisplay={this.toggleDisplay} />
-          )}
-          {!this.state.displaySignIn && (
-            <FormSignUp toogleDisplay={this.toggleDisplay} />
-          )}
+          )) || <FormSignUp toogleDisplay={this.toggleDisplay} />}
         </div>
       </React.Fragment>
     );

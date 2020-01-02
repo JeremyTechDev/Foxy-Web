@@ -27,8 +27,8 @@ export default class Header extends React.Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink className="NavLink" to="/bookshelf" exact activeStyle={act}>
-                  Bookshelf
+                <NavLink className="NavLink" to="/groups" exact activeStyle={act}>
+                  Groups
                 </NavLink>
               </li>
               <li>
@@ -46,12 +46,3 @@ export default class Header extends React.Component {
     );
   }
 }
-
-//Scroll header animation
-window.addEventListener("scroll", function() {
-  if (this.scrollY > 0) {
-    document.getElementById("logo").style.width = "40px";
-  } else {
-    document.getElementById("logo").style.width = "75px";
-  }
-});

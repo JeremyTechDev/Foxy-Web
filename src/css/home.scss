@@ -46,7 +46,6 @@ body {
   margin: 0;
   height: 100vh;
   width: 50%;
-  font-family: "Lato", sans-serif;
   position: absolute;
   left: 55%;
   display: flex;
@@ -55,7 +54,7 @@ body {
   overflow: hidden;
 }
 
-.form {
+.form-sign {
   width: 50%;
   margin: 20px 0;
   text-align: center;
@@ -73,29 +72,10 @@ body {
       position: absolute;
       top: 15px;
       left: 10%;
-      transition: 0.3s;
       pointer-events: none;
   }
 }
-.inp {
-  margin: 10px auto;
-  width: 80%;
-  font-family: "Lato", sans-serif;
-  background: none;
-  color: $dark;
-  border: none;
-  border-bottom: 3px solid $pri;
-  font-size: 25px;
-  outline: none;
-
-  &:focus ~ label,
-  &:valid ~ label {
-    top: -8px;
-    left: 10%;
-    font-weight: bold;
-  }
-}
-.sign {
+.btn-sign {
   margin: 15px auto;
   width: 80%;
   background: $pri;
@@ -113,8 +93,6 @@ body {
   border: none;
   background: none;
   margin: 10px;
-  font-family: "Lato", sans-serif;
-  color: $dark;
   &:hover {
     color: royalblue;
   }

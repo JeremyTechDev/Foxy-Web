@@ -10,17 +10,27 @@ export default class Wall extends React.Component {
     super(props);
 
     this.state = {
-      posts: [],
+      posts: [] //list of all posts
     };
   }
 
   componentDidMount() {
+    //gets all post's information 
     PostData("selectAllPosts", {}).then(res => {
       res.allPosts.forEach(post => {
-        PostData("checkIfLiked", post).then(e => {
-          post["likedByUser"] = e.result;
-          this.setState({
-            posts: [...this.state.posts, post]
+        PostData("checkIfLiked", post).then(liked => {
+          post["likedByUser"] = liked.result;
+          PostData("checkIfSaved", post).then(saved => {
+            post["savedByUser"] = saved.result;
+            PostData("selectAllPostComments", post).then(comments => {
+              post["comments"] = []
+              comments.allPostComments.forEach(comment => {
+                post["comments"] = [...post.comments, comment]
+              });
+              this.setState({
+                posts: [...this.state.posts, post]
+              });
+            });
           });
         });
       });
@@ -30,12 +40,10 @@ export default class Wall extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Header title="Wall" />
+        <Header />
         <div className="posts-cotainer">
           <MakePost />
-          <WallGrid
-            posts={this.state.posts}
-          />
+          <WallGrid posts={this.state.posts} />
         </div>
       </React.Fragment>
     );

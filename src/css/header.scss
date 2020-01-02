@@ -18,7 +18,7 @@
 .header {
   position: fixed;
   top: 0;
-  background-color: $dark;
+  background-color: rgba(18,18,18,0.95);
   display: flex;
   width: 100%;
   justify-content: flex-end;
@@ -35,7 +35,7 @@
   cursor: pointer;
   img {
     transition: 0.3s all;
-    width: 75px;
+    width: 40px;
   }
   h1 {
     color: $light; 
