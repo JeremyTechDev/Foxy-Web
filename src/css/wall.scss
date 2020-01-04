@@ -2,7 +2,6 @@
 @import url("https://fonts.googleapis.com/css?family=Lato|PT+Sans&display=swap");
 //   font-family: 'PT Sans', sans-serif;
 //   font-family: 'Lato', sans-serif;
-
 *::placeholder {
   color: rgba(255, 255, 255, 0.3) !important;
 }
@@ -20,6 +19,7 @@
 }
 .post-info {
   display: flex;
+  justify-content: space-between;
 }
 .post-info-img-container {
   background: $light;
@@ -46,7 +46,10 @@
     font-size: 18px;
   }
   img {
-    width: 100%;
+    display: block;
+    margin: 0 auto;
+    max-height: 700px;
+    max-width: 100%;
   }
 }
 .post-actions {
@@ -163,4 +166,84 @@
 }
 .publish {
   float: right;
+}
+/***S-POST (Single Post)***/
+.s-post-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+.s-post {
+  position: absolute;
+  display: flex;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background: #000;
+}
+.s-post-close {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  margin: 0;
+  i:hover {
+    color: $pri;
+  }
+}
+.s-post-img {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+.s-post-content {
+  width: 30%;
+  height: 100%;
+  .post-info-img-container {
+    width: 75px;
+    height: 75px;
+    margin: 5px;
+  }
+  .post-info-text {
+    width: 60%;
+    margin: 5px;
+  }
+  .s-post-caption {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px;
+  }
+}
+.s-post-comments {
+  padding: 10px 5px;
+  max-height: 50%;
+  overflow-y: scroll;
+  .s-comment-date {
+    font-size: 12px;
+    margin-bottom: 15px;
+  }
+}
+.s-post-comment-container {
+  display: flex;
+  img {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    object-fit: cover;
+    background: $light;
+    border-radius: 50%;
+    border: 1px solid $dark;
+  }
+  .comment-container {
+    padding-top: 5px;
+  }
 }

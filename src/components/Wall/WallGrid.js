@@ -1,7 +1,8 @@
 import React from "react";
 import { PostData } from "../../services/PostData";
+import SinglePost from "./Post";
 
-class LikeBtn extends React.Component {
+export class LikeBtn extends React.Component {
   constructor(props) {
     super(props);
 
@@ -17,11 +18,10 @@ class LikeBtn extends React.Component {
   LikeAction() {
     const { likedByUser, likes } = this.state;
     //Adds and reduces likes on UI and DB
+    PostData("likePostAction", this.state);
     if (likedByUser) {
-      PostData("dislikePost", this.state);
       this.setState({ likes: parseInt(likes) - 1 });
     } else {
-      PostData("likePost", this.state);
       this.setState({ likes: parseInt(likes) + 1 });
     }
     //changes the state of like
@@ -49,18 +49,25 @@ class LikeBtn extends React.Component {
   }
 }
 
-class Comments extends React.Component {
+export class Comments extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       comments: this.props.comments, //Object with all post's comments
       newComment: null, //new comment possibly added
-      postId: this.props.postId
+      postId: this.props.postId,
+      post: this.props.post,
+      showSinglePost: false
     };
 
+    this.showSinglePost = this.showSinglePost.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.makeComment = this.makeComment.bind(this);
+  }
+  //shows and hides SinglePost Display
+  showSinglePost() {
+    this.setState({ showSinglePost: !this.state.showSinglePost });
   }
   //Mirror changes on input to the state
   handleChange = event => {
@@ -81,13 +88,20 @@ class Comments extends React.Component {
   }
 
   render() {
-    const { comments } = this.state;
+    const { comments, post, showSinglePost } = this.state;
     return (
       <React.Fragment>
         <div className="comments">
           {comments.length > 3 && (
-            <p className="view-all">View all {comments.length} comments</p>
+            <p onClick={this.showSinglePost} className="view-all">
+              View all {comments.length} comments
+            </p>
           )}
+
+          {showSinglePost && (
+            <SinglePost display={() => this.showSinglePost()} post={post} />
+          )}
+
           {comments.slice(0, 3).map(comment => {
             return (
               <p className="comment-container">
@@ -116,7 +130,7 @@ class Comments extends React.Component {
   }
 }
 
-class SaveBtn extends React.Component {
+export class SaveBtn extends React.Component {
   constructor(props) {
     super(props);
 
@@ -130,11 +144,7 @@ class SaveBtn extends React.Component {
 
   SaveAction() {
     //saves changes on DB and on state UI
-    if (this.state.savedByUser) {
-      PostData("unsavePost", this.state);
-    } else {
-      PostData("savePost", this.state);
-    }
+    PostData("savePostAction", this.state);
     this.setState({ savedByUser: !this.state.savedByUser });
     return false;
   }
@@ -202,7 +212,7 @@ export default class WallGrid extends React.Component {
               <SaveBtn postId={post_id} savedByUser={savedByUser} />
             </div>
 
-            <Comments postId={post_id} comments={comments} />
+            <Comments post={post} postId={post_id} comments={comments} />
           </div>
         </React.Fragment>
       );

@@ -3,8 +3,8 @@ import { NavLink } from "react-router-dom";
 import "../css/header.scss";
 
 const act = {
-  borderBottom: '1px solid rgba(237,150,11,1)'
-}
+  borderBottom: "1px solid rgba(237,150,11,1)"
+};
 
 export default class Header extends React.Component {
   render() {
@@ -27,12 +27,25 @@ export default class Header extends React.Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink className="NavLink" to="/groups" exact activeStyle={act}>
+                <NavLink
+                  className="NavLink"
+                  to="/groups"
+                  exact
+                  activeStyle={act}
+                >
                   Groups
                 </NavLink>
               </li>
               <li>
-                <NavLink className="NavLink" to="/profile" exact activeStyle={act}>
+                <NavLink
+                  className="NavLink"
+                  to={{
+                    pathname: "/profile",
+                    search: `?user_id=1`
+                  }}
+                  exact
+                  activeStyle={act}
+                >
                   Profile
                 </NavLink>
               </li>

@@ -8,6 +8,7 @@ import "../../css/books.scss";
 import GroupsGrid from "../Groups/GroupsGrid";
 import "../../css/groups.scss";
 import { PostData } from "../../services/PostData";
+//import queryString from 'query-string';
 
 class TabList extends React.Component {
   render() {
@@ -70,26 +71,14 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount() {
+    
+    //const { user_id } = queryString.parse(this.props.location.search) the user to display
+
     //gets all posts info
     PostData("selectAllPosts", {}).then(res => {
-      res.allPosts.forEach(post => {
-        PostData("checkIfLiked", post).then(liked => {
-          post["likedByUser"] = liked.result;
-          PostData("checkIfSaved", post).then(saved => {
-            post["savedByUser"] = saved.result;
-            PostData("selectAllPostComments", post).then(comments => {
-              post["comments"] = [];
-              comments.allPostComments.forEach(comment => {
-                post["comments"] = [...post.comments, comment];
-              });
-              this.setState({
-                posts: [...this.state.posts, post]
-              });
-            });
-          });
-        });
-      });
-    });
+      this.setState({posts: res});
+    })
+
     //gets all books info
     PostData("selectAllBooks", {}).then(res => {
       res.allBooks.forEach(book => {
@@ -98,26 +87,12 @@ export default class Profile extends React.Component {
         });
       });
     });
-    //get all saved posts
+
+    //saved posts
     PostData("selectAllPosts", {}).then(res => {
-      res.allPosts.forEach(post => {
-        PostData("checkIfSaved", post).then(e => {
-          if (e.result) {
-            this.setState({ savedPosts: [...this.state.savedPosts, post] });
-          }
-          post["savedByUser"] = e.result;
-          PostData("checkIfLiked", post).then(saved => {
-            post["likedByUser"] = saved.result;
-            PostData("selectAllPostComments", post).then(comments => {
-              post["comments"] = [];
-              comments.allPostComments.forEach(comment => {
-                post["comments"] = [...post.comments, comment];
-              });
-            });
-          });
-        });
-      });
-    });
+      this.setState({savedPosts: res});
+    })
+
     //gets all groups info
     PostData("selectUserGroups", {}).then(res => {
       res.userGroups.forEach(group => {

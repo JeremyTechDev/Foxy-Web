@@ -38,7 +38,7 @@ export default class MakePost extends React.Component {
           <div className="makePost-img-container">
             <img alt="" src={require("../../images/FOXYFACE_LOGO-01.png")} />
             <button title="Add Photo" className="btn">
-              <i class="far fa-images"></i>
+              <i className="far fa-images"></i>
             </button>
           </div>
           <form onSubmit={this.makePost}>

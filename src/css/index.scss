@@ -20,6 +20,24 @@ body {
   flex-wrap: wrap;
   align-items: center;
 }
+.page-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  h2 {
+    color: gray;
+  }
+  img {
+    width: 100px;
+    filter: grayscale(80%);
+    transition: .3s all;
+    &:hover {
+      filter: none;
+    }
+  }
+}
 /***************************/
 
 .inp {
