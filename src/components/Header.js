@@ -22,7 +22,14 @@ export default class Header extends React.Component {
           <nav>
             <ul className="nav-links">
               <li>
-                <NavLink className="NavLink" to="/wall" exact activeStyle={act}>
+                <NavLink
+                  className="NavLink"
+                  to={{
+                    pathname: "/wall",
+                    search: `?user=jermy2918`
+                  }}
+                  activeStyle={act}
+                >
                   Wall
                 </NavLink>
               </li>
@@ -30,7 +37,6 @@ export default class Header extends React.Component {
                 <NavLink
                   className="NavLink"
                   to="/groups"
-                  exact
                   activeStyle={act}
                 >
                   Groups
@@ -41,9 +47,8 @@ export default class Header extends React.Component {
                   className="NavLink"
                   to={{
                     pathname: "/profile",
-                    search: `?user_id=1`
+                    search: `?user=jermy2918`
                   }}
-                  exact
                   activeStyle={act}
                 >
                   Profile

@@ -7,12 +7,15 @@ export default class MakePost extends React.Component {
 
     this.state = {
       post: {
-        content: null,
-        image: "https://miro.medium.com/max/1024/1*TPgy6Pos4YGuWwq89Gwx3w.jpeg"
-      }
+        content: "",
+        image: "",
+        user: this.props.user.user
+      },
+      addDisplay: false
     };
 
     this.makePost = this.makePost.bind(this);
+    this.toogleDisplay = this.toogleDisplay.bind(this);
   }
 
   //Mirror all changes on inputs to the state
@@ -27,8 +30,13 @@ export default class MakePost extends React.Component {
 
   //Saves posts on DB without refresing the page
   makePost() {
-    PostData("makePost", this.state.post)
-    return false; //stop refreshing
+    PostData("makePost", this.state.post);
+    //window.location.reload();
+  }
+
+  toogleDisplay() {
+    this.setState({ addDisplay: !this.state.addDisplay });
+    console.log(this.state);
   }
 
   render() {
@@ -37,20 +45,52 @@ export default class MakePost extends React.Component {
         <div className="makePost">
           <div className="makePost-img-container">
             <img alt="" src={require("../../images/FOXYFACE_LOGO-01.png")} />
-            <button title="Add Photo" className="btn">
+            <button
+              onClick={this.toogleDisplay}
+              title="Add Photo"
+              className="btn-noStyle"
+            >
               <i className="far fa-images"></i>
             </button>
           </div>
-          <form onSubmit={this.makePost}>
-            <textarea
-              className="inp makePost-text"
-              onChange={this.handleChange("content")}
-              placeholder="What are your reading now?"
-            ></textarea>
-            <button type="submit" className="publish btn">
-              Publish
-            </button>
-          </form>
+
+          <textarea
+            className="inp makePost-text"
+            onChange={this.handleChange("content")}
+            placeholder="What are your reading now?"
+          />
+
+          {this.state.post.image !== "" && (
+            <img
+              className="little-upload-img"
+              alt=""
+              src={this.state.post.image}
+            />
+          )}
+
+          <button onClick={this.makePost} type="button" className="publish btn">
+            Publish
+          </button>
+
+          {this.state.addDisplay && (
+            <div className="op-backgroud">
+              <div className="add-photo-container">
+                <h1>Add a photo</h1>
+                <input type="file" className="inp" />
+                <h4>or</h4>
+                <input
+                  type="text"
+                  onChange={this.handleChange("image")}
+                  placeholder="Paste the image link here..."
+                  className="inp"
+                  value={this.state.post.image}
+                />
+                <button onClick={this.toogleDisplay} className="btn">
+                  Done
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </React.Fragment>
     );

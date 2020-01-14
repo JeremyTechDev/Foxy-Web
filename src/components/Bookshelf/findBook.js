@@ -45,7 +45,7 @@ export default class FindBook extends React.Component {
     super(props);
 
     this.state = {
-      book: {},
+      book: {user: this.props.user}, //starts with the user info
       booksSearchedOnline: [],
       displaySearchOnline: true, //decides to show online search with api
       showErrorOnRating: false
@@ -74,7 +74,7 @@ export default class FindBook extends React.Component {
   //set the book chose by the user un the book key state
   handleBookChoice(choice) {
     this.setState({
-      book: choice
+      book: {...this.state.book, ...choice}
     });
 
     this.toogle_Display(); //change display form
@@ -98,8 +98,9 @@ export default class FindBook extends React.Component {
       return false;
     } else {
       //save new book on DB
+      console.log(this.state)
       PostData("insertBook", this.state.book);
-      window.location.reload(); //refresh page
+      //window.location.reload(); //refresh page
     }
   };
 

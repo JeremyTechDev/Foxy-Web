@@ -25,6 +25,7 @@ export default class Groups extends React.Component {
   componentDidMount() {
     PostData("selectAllGroups", {}).then(res => {
       res.allGroups.forEach(group => {
+        console.log(res);
         this.setState({
           groups: [...this.state.groups, group]
         });

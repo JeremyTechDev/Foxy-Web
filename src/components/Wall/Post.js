@@ -6,7 +6,7 @@ export default class SinglePost extends React.Component {
   render() {
     const { post } = this.props;
     return (
-      <div className="s-post-container">
+      <div className="op-backgroud">
         <div className="s-post">
           <div className="s-post-img">
             <img alt="Post" src={require("../../images/ex.png")} />
@@ -34,41 +34,31 @@ export default class SinglePost extends React.Component {
               </button>
             </div>
 
-            <div className="s-post-caption">
-              {post !== undefined && post.content}
-            </div>
+            <div className="s-post-caption">{post.content}</div>
 
             <div className="s-post-comments">
-              {post !== undefined &&
-                post.comments.map(comment => {
-                  return (
-                    <div className="s-post-comment-container">
-                      <img
-                        alt=""
-                        src={require("../../images/FOXYFACE_LOGO-01.png")}
-                      />
-                      <p className="comment-container">
-                        <strong>{comment.user_id} </strong>
-                        {comment.comment}
-                        <p className="s-comment-date">{comment.date}</p>
-                      </p>
-                    </div>
-                  );
-                })}
+              {post.comments.map(comment => {
+                return (
+                  <div className="s-post-comment-container">
+                    <img
+                      alt=""
+                      src={require("../../images/FOXYFACE_LOGO-01.png")}
+                    />
+                    <p className="comment-container">
+                      <strong>{comment.user_id} </strong>
+                      {comment.comment}
+                      <p className="s-comment-date">{comment.date}</p>
+                    </p>
+                  </div>
+                );
+              })}
             </div>
 
             <div className="post-actions">
               {post !== undefined && (
                 <React.Fragment>
-                  <LikeBtn
-                    postId={post.post_id}
-                    likes={post.likes}
-                    likedByUser={post.likedByUser}
-                  />
-                  <SaveBtn
-                    postId={post.post_id}
-                    savedByUser={post.savedByUser}
-                  />
+                  <LikeBtn post={post} />
+                  <SaveBtn post={post} />
                 </React.Fragment>
               )}
             </div>

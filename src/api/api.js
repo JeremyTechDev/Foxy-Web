@@ -21,7 +21,7 @@ export function searchBook(book, lan = "en") {
            categories: book.categories,
            rating: null,
            image: book.imageLinks.thumbnail ,
-           isbn: book.industryIdentifiers[0].identifier
+           //isbn: book.industryIdentifiers[0].identifier
          });
        }
        return returnItem;

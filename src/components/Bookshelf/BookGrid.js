@@ -65,6 +65,7 @@ export default class BooksGrid extends React.Component {
 
         {findBook_Display && (
           <FindBook
+            user={this.props.user}
             toogleDisplay={() => this.toogleDisplay("findBook_Display")}
           />
         )}

@@ -22,27 +22,33 @@
   justify-content: space-between;
 }
 .post-info-img-container {
-  background: $light;
-  width: 100px;
-  height: 100px;
-  margin: 7px 15px;
+  background: $dark;
+  width: 75px;
+  height: 75px;
+  margin: 7px 10px;
   padding: 5px;
   border-radius: 50%;
   border: 1px solid $dark;
   img {
     height: 100%;
     width: 100%;
+    border-radius: 50%;
+    border: 1px solid $dark;
   }
 }
 .post-info-text {
   display: table;
-  width: 500px;
-  margin: 7px 15px;
+  width: 600px;
+  margin: 7px 0px;
   padding: 15px 0;
+  text-decoration: none;
+  h3:hover {
+    color: $pri;
+  }
 }
 .post-content {
   p {
-    padding: 15px;
+    padding: 5px 15px;
     font-size: 18px;
   }
   img {
@@ -81,9 +87,9 @@
 }
 .comment-container {
   strong {
+    cursor: pointer;
     &:hover {
       color: $pri;
-      cursor: pointer;
     }
   }
 }
@@ -121,6 +127,7 @@
   border: none;
   display: inline-block;
   outline: none;
+  transition: 0.3s all;
 }
 /**********MAKE POST*************/
 .makePost {
@@ -142,15 +149,9 @@
   border-radius: 50%;
   border: 1px solid $dark;
   button {
-    background: none;
-    width: 50px;
-    height: 50px;
-    padding: 0;
-    margin: 5px auto;
-    transition: 0.3s all;
-    font-size: 35px;
     &:hover {
       transform: scale(1.1);
+      color: $pri;
     }
   }
   img {
@@ -160,6 +161,7 @@
 }
 .makePost-text {
   width: 600px;
+  overflow: hidden;
   min-height: 120px;
   margin: 7px 0;
   resize: vertical;
@@ -167,8 +169,38 @@
 .publish {
   float: right;
 }
+.little-upload-img {
+  width: 80px;
+  border-radius: 5px;
+  margin: 5px;
+}
+.add-photo-container {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  background: $dark;
+  border-radius: 10px;
+  width: 30%;
+  padding: 10px;
+  text-align: center;
+  h1 {
+    margin: 15px auto;
+  }
+  input[type="file"]::-webkit-file-upload-button {
+    border: none;
+    background: $pri;
+    color: $light;
+    padding: 5px;
+    transition: 0.3s all;
+    &:hover {
+      background-color: $pri-op;
+    }
+  }
+}
+
 /***S-POST (Single Post)***/
-.s-post-container {
+.op-backgroud {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -177,7 +209,7 @@
   background: rgba(0, 0, 0, 0.5);
 }
 .s-post {
-  position: absolute;
+  position: fixed;
   display: flex;
   top: 47%;
   left: 50%;
@@ -217,6 +249,7 @@
   .post-info-text {
     width: 60%;
     margin: 5px;
+    text-decoration: none;
   }
   .s-post-caption {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);

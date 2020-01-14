@@ -8,7 +8,7 @@ import "../../css/books.scss";
 import GroupsGrid from "../Groups/GroupsGrid";
 import "../../css/groups.scss";
 import { PostData } from "../../services/PostData";
-//import queryString from 'query-string';
+import queryString from "query-string";
 
 class TabList extends React.Component {
   render() {
@@ -61,6 +61,7 @@ export default class Profile extends React.Component {
 
     this.state = {
       tab: "posts-tab", //displayed tab
+      userData: [],
       posts: [],
       books: [],
       groups: [],
@@ -71,17 +72,21 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount() {
-    
-    //const { user_id } = queryString.parse(this.props.location.search) the user to display
+    const { user } = queryString.parse(this.props.location.search); //the user to display from URL
+
+    //gets all user info
+    PostData("getUserProfileInfo", { user: user }).then(res => {
+      this.setState({ userData: res });
+    });
 
     //gets all posts info
-    PostData("selectAllPosts", {}).then(res => {
-      this.setState({posts: res});
-    })
+    PostData("selectAllUserPosts", { user: user }).then(res => {
+      this.setState({ posts: res });
+    });
 
     //gets all books info
-    PostData("selectAllBooks", {}).then(res => {
-      res.allBooks.forEach(book => {
+    PostData("getUserBookshelf", { user: user }).then(res => {
+      res.forEach(book => {
         this.setState({
           books: [...this.state.books, book]
         });
@@ -89,12 +94,12 @@ export default class Profile extends React.Component {
     });
 
     //saved posts
-    PostData("selectAllPosts", {}).then(res => {
-      this.setState({savedPosts: res});
-    })
+    PostData("selectAllUserPosts", { user: user }).then(res => {
+      this.setState({ savedPosts: res });
+    });
 
     //gets all groups info
-    PostData("selectUserGroups", {}).then(res => {
+    PostData("selectUserGroups", { user: user }).then(res => {
       res.userGroups.forEach(group => {
         this.setState({
           groups: [...this.state.groups, group]
@@ -118,31 +123,30 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    const { tab } = this.state;
+    const { tab, userData } = this.state;
     return (
       <React.Fragment>
         <Header />
 
         <div className="profile">
           <div className="artboard">
-            <img alt="Artboard" src={require("../../images/ex.png")} />
+            {userData.cover_img && (
+              <img alt="Artboard" src={userData.cover_img} />
+            )}
           </div>
           <img
             className="profile-img"
             alt="Profile"
-            src={require("../../images/FOXYFACE_LOGO-01.png")}
+            src={userData.profile_img}
           />
           <div className="profile-info">
-            <h1>Jeremy Muñoz</h1>
-            <h5>@jeremy2918</h5>
-            <h4>
-              ¿Falta alguna traducción, hay algún error o quiere elogiar nuestra
-              labor? Rellene el formulario con sus comentarios.
-            </h4>
+            <h1>{userData.name}</h1>
+            <h5>@{userData.username}</h5>
+            <h4>{userData.bio}</h4>
             <h3>
-              5 <span>Posts </span>
-              165 <span>Followers </span>
-              100 <span>Following </span>
+              {userData.num_posts} <span>Posts </span>
+              {userData.num_followers} <span>Followers </span>
+              {userData.num_following} <span>Following </span>
             </h3>
           </div>
           <TabList toggleTab={this.toggleTab} />
@@ -157,7 +161,10 @@ export default class Profile extends React.Component {
         {tab === "bookshelf-tab" && (
           <div className="tab-body">
             <span>
-              <BooksGrid books={this.state.books} />
+              <BooksGrid
+                user={this.state.userData.user_id}
+                books={this.state.books}
+              />
             </span>
           </div>
         )}

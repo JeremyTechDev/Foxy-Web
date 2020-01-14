@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { PostData } from "../../services/PostData";
 import SinglePost from "./Post";
 
@@ -7,9 +8,10 @@ export class LikeBtn extends React.Component {
     super(props);
 
     this.state = {
-      likedByUser: this.props.likedByUser, //true or false
-      likes: this.props.likes, //num of likes
-      postId: this.props.postId
+      likedByUser: this.props.post.likedByUser,
+      likes: this.props.post.likes, //num of likes
+      postId: this.props.post.post_id,
+      userId: this.props.post.user_id
     };
 
     this.LikeAction = this.LikeAction.bind(this);
@@ -18,7 +20,7 @@ export class LikeBtn extends React.Component {
   LikeAction() {
     const { likedByUser, likes } = this.state;
     //Adds and reduces likes on UI and DB
-    PostData("likePostAction", this.state);
+    PostData("likePostAction", this.state).then(res => console.log(res));
     if (likedByUser) {
       this.setState({ likes: parseInt(likes) - 1 });
     } else {
@@ -54,10 +56,12 @@ export class Comments extends React.Component {
     super(props);
 
     this.state = {
-      comments: this.props.comments, //Object with all post's comments
-      newComment: null, //new comment possibly added
-      postId: this.props.postId,
-      post: this.props.post,
+      newCommentData: {
+        username: this.props.user, //the users making the comment
+        postId: this.props.post.post_id, //post where the comment will be added
+        newComment: "" //new comment possibly added
+      },
+      allComments: this.props.post.comments,
       showSinglePost: false
     };
 
@@ -71,42 +75,58 @@ export class Comments extends React.Component {
   }
   //Mirror changes on input to the state
   handleChange = event => {
-    this.setState({ newComment: event.target.value });
+    this.setState({
+      newCommentData: {
+        ...this.state.newCommentData,
+        newComment: event.target.value
+      }
+    });
   };
 
   makeComment() {
+    const { allComments, newCommentData } = this.state;
     //Add the new comment to the state and UI and clean input
     this.setState({
-      comments: [
-        { user_id: 1, comment: this.state.newComment },
-        ...this.state.comments
-      ],
-      newComment: ""
+      allComments: allComments.push({
+        username: newCommentData.username,
+        comment: newCommentData.newComment
+      })
     });
-    PostData("makeComment", this.state); //Save changes on DB
+
+    PostData("makeComment", this.state.newCommentData); //Save changes on DB
     return false;
   }
 
   render() {
-    const { comments, post, showSinglePost } = this.state;
+    const { allComments, newCommentData, showSinglePost } = this.state;
     return (
       <React.Fragment>
         <div className="comments">
-          {comments.length > 3 && (
+          {allComments.length > 3 && (
             <p onClick={this.showSinglePost} className="view-all">
-              View all {comments.length} comments
+              View all {allComments.length} comments
             </p>
           )}
 
           {showSinglePost && (
-            <SinglePost display={() => this.showSinglePost()} post={post} />
+            <SinglePost
+              display={() => this.showSinglePost()}
+              post={this.props.post}
+            />
           )}
 
-          {comments.slice(0, 3).map(comment => {
+          {allComments.slice(0, 3).map(com => {
             return (
               <p className="comment-container">
-                <strong>{comment.user_id} </strong>
-                {comment.comment}
+                <Link
+                  to={{
+                    pathname: "/profile",
+                    search: `?user=${com.username}`
+                  }}
+                >
+                  <strong>{com.username} </strong>
+                </Link>
+                {com.comment}
               </p>
             );
           })}
@@ -118,7 +138,7 @@ export class Comments extends React.Component {
             rows="1"
             className="comment-input"
             onChange={this.handleChange}
-            value={this.state.newComment}
+            value={newCommentData.newComment}
             required
           />
           <button onClick={this.makeComment} className="btn-post-comment">
@@ -135,8 +155,10 @@ export class SaveBtn extends React.Component {
     super(props);
 
     this.state = {
-      postId: this.props.postId,
-      savedByUser: this.props.savedByUser //true or false
+      post: this.props.post,
+      savedByUser: this.props.post.savedByUser,
+      postId: this.props.post.post_id,
+      userId: this.props.post.user_id
     };
 
     this.SaveAction = this.SaveAction.bind(this);
@@ -155,12 +177,12 @@ export class SaveBtn extends React.Component {
       <span className="span-right">
         <button type="button" className="btn-noStyle" onClick={this.SaveAction}>
           {(!savedByUser && (
-            <i title="Save Post" class="fas fa-bookmark"></i>
+            <i title="Save Post" className="fas fa-bookmark"></i>
           )) || (
             <i
               style={{ color: "rgb(226,38,77)" }}
               title="Unsave Post"
-              class="fas fa-bookmark"
+              className="fas fa-bookmark"
             ></i>
           )}
         </button>
@@ -172,47 +194,39 @@ export class SaveBtn extends React.Component {
 export default class WallGrid extends React.Component {
   render() {
     return this.props.posts.map(post => {
-      const {
-        post_id,
-        user_id,
-        date,
-        content, //text of post
-        likes, //num of likes
-        likedByUser, //true or false
-        savedByUser, //trur e or false
-        comments //list of comments
-      } = post;
+      const { date, content, userData } = post;
       return (
         <React.Fragment>
           <div className="post">
             <div className="post-info">
               <div className="post-info-img-container">
-                <img
-                  alt=""
-                  src={require("../../images/FOXYFACE_LOGO-01.png")}
-                />
+                <img alt="" src={userData[0].profile_img} />
               </div>
+
               <div className="post-info-text">
-                <h1>@{user_id}</h1>
-                <h5>{date}</h5>
+                <Link
+                  to={{
+                    pathname: "/profile",
+                    search: `?user=${userData[0].username}`
+                  }}
+                >
+                  <h3>{userData[0].username}</h3>
+                </Link>
+                <h6>{date}</h6>
               </div>
             </div>
 
-            <div className="post-content">
+            <pre className="post-content">
               {content && <p>{content}</p>}
-              <img alt="" src={require("../../images/ex.png")} />
-            </div>
+              <img alt="" src={post.img} />
+            </pre>
 
             <div className="post-actions">
-              <LikeBtn
-                postId={post_id}
-                likes={likes}
-                likedByUser={likedByUser}
-              />
-              <SaveBtn postId={post_id} savedByUser={savedByUser} />
+              <LikeBtn post={post} />
+              <SaveBtn post={post} />
             </div>
 
-            <Comments post={post} postId={post_id} comments={comments} />
+            <Comments post={post} user={this.props.user} />
           </div>
         </React.Fragment>
       );
