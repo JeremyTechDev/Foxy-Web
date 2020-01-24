@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { PostData } from "../../services/PostData";
 import SinglePost from "./Post";
+import * as Redux from "../../store";
 
 export class LikeBtn extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ export class LikeBtn extends React.Component {
       likedByUser: this.props.post.likedByUser,
       likes: this.props.post.likes, //num of likes
       postId: this.props.post.post_id,
-      userId: this.props.post.user_id
+      userId: this.props.user
     };
 
     this.LikeAction = this.LikeAction.bind(this);
@@ -20,7 +20,7 @@ export class LikeBtn extends React.Component {
   LikeAction() {
     const { likedByUser, likes } = this.state;
     //Adds and reduces likes on UI and DB
-    PostData("likePostAction", this.state).then(res => console.log(res));
+    Redux.store.dispatch(Redux.toogleLikeAction(this.state));
     if (likedByUser) {
       this.setState({ likes: parseInt(likes) - 1 });
     } else {
@@ -28,7 +28,6 @@ export class LikeBtn extends React.Component {
     }
     //changes the state of like
     this.setState({ likedByUser: !likedByUser });
-    return false;
   }
 
   render() {
@@ -93,8 +92,7 @@ export class Comments extends React.Component {
       })
     });
 
-    PostData("makeComment", this.state.newCommentData); //Save changes on DB
-    return false;
+    Redux.store.dispatch(Redux.addCommentAction(this.state.newCommentData)); //Save changes on DB
   }
 
   render() {
@@ -158,7 +156,7 @@ export class SaveBtn extends React.Component {
       post: this.props.post,
       savedByUser: this.props.post.savedByUser,
       postId: this.props.post.post_id,
-      userId: this.props.post.user_id
+      userId: this.props.user
     };
 
     this.SaveAction = this.SaveAction.bind(this);
@@ -166,9 +164,8 @@ export class SaveBtn extends React.Component {
 
   SaveAction() {
     //saves changes on DB and on state UI
-    PostData("savePostAction", this.state);
+    Redux.store.dispatch(Redux.toogleSaveAction(this.state));
     this.setState({ savedByUser: !this.state.savedByUser });
-    return false;
   }
 
   render() {
@@ -193,43 +190,47 @@ export class SaveBtn extends React.Component {
 
 export default class WallGrid extends React.Component {
   render() {
-    return this.props.posts.map(post => {
-      const { date, content, userData } = post;
-      return (
-        <React.Fragment>
-          <div className="post">
-            <div className="post-info">
-              <div className="post-info-img-container">
-                <img alt="" src={userData[0].profile_img} />
+    return (
+      <React.Fragment>
+        {this.props.posts.map(post => {
+          const { date, content, userData } = post;
+          return (
+            <React.Fragment>
+              <div className="post">
+                <div className="post-info">
+                  <div className="post-info-img-container">
+                    <img alt="" src={userData[0].profile_img} />
+                  </div>
+
+                  <div className="post-info-text">
+                    <Link
+                      to={{
+                        pathname: "/profile",
+                        search: `?user=${userData[0].username}`
+                      }}
+                    >
+                      <h3>{userData[0].username}</h3>
+                    </Link>
+                    <h6>{date}</h6>
+                  </div>
+                </div>
+
+                <pre className="post-content">
+                  {content && <p>{content}</p>}
+                  <img alt="" src={post.img} />
+                </pre>
+
+                <div className="post-actions">
+                  <LikeBtn post={post} user={this.props.user.user}/>
+                  <SaveBtn post={post} user={this.props.user.user}/>
+                </div>
+
+                <Comments post={post} user={this.props.user.user} />
               </div>
-
-              <div className="post-info-text">
-                <Link
-                  to={{
-                    pathname: "/profile",
-                    search: `?user=${userData[0].username}`
-                  }}
-                >
-                  <h3>{userData[0].username}</h3>
-                </Link>
-                <h6>{date}</h6>
-              </div>
-            </div>
-
-            <pre className="post-content">
-              {content && <p>{content}</p>}
-              <img alt="" src={post.img} />
-            </pre>
-
-            <div className="post-actions">
-              <LikeBtn post={post} />
-              <SaveBtn post={post} />
-            </div>
-
-            <Comments post={post} user={this.props.user} />
-          </div>
-        </React.Fragment>
-      );
-    });
+            </React.Fragment>
+          );
+        })}
+      </React.Fragment>
+    );
   }
 }

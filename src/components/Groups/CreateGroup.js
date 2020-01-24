@@ -1,6 +1,6 @@
 import React from "react";
 import "../../css/groups.scss";
-import { PostData } from "../../services/PostData";
+import * as Redux from "../../store";
 
 export default class CreateGroup extends React.Component {
   constructor(props) {
@@ -20,8 +20,7 @@ export default class CreateGroup extends React.Component {
 
   //Creates the group on the DB and refresh page
   handleSubmit() {
-    PostData("createGroup", this.state.createGroup);
-    window.location.reload(); //refresh page
+    Redux.store.dispatch(Redux.addGroupAction(this.state.createGroup))
   }
 
   //runs everytime user changes any input file

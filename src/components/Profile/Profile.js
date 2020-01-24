@@ -7,7 +7,7 @@ import BooksGrid from "../Bookshelf/BookGrid";
 import "../../css/books.scss";
 import GroupsGrid from "../Groups/GroupsGrid";
 import "../../css/groups.scss";
-import { PostData } from "../../services/PostData";
+import * as Redux from "../../store";
 import queryString from "query-string";
 
 class TabList extends React.Component {
@@ -68,44 +68,22 @@ export default class Profile extends React.Component {
       savedPosts: []
     };
 
+    Redux.store.subscribe(() => {
+      this.setState({
+        books: Redux.store.getState().books,
+        userData: Redux.store.getState().userData,
+        groups: Redux.store.getState().userGroups,
+        posts: Redux.store.getState().userPosts,
+        savedPosts: Redux.store.getState().posts.filter(post => post.savedByUser)
+      });
+    });
+
     this.toggleTab = this.toggleTab.bind(this);
   }
 
   componentDidMount() {
     const { user } = queryString.parse(this.props.location.search); //the user to display from URL
-
-    //gets all user info
-    PostData("getUserProfileInfo", { user: user }).then(res => {
-      this.setState({ userData: res });
-    });
-
-    //gets all posts info
-    PostData("selectAllUserPosts", { user: user }).then(res => {
-      this.setState({ posts: res });
-    });
-
-    //gets all books info
-    PostData("getUserBookshelf", { user: user }).then(res => {
-      res.forEach(book => {
-        this.setState({
-          books: [...this.state.books, book]
-        });
-      });
-    });
-
-    //saved posts
-    PostData("selectAllUserPosts", { user: user }).then(res => {
-      this.setState({ savedPosts: res });
-    });
-
-    //gets all groups info
-    PostData("selectUserGroups", { user: user }).then(res => {
-      res.userGroups.forEach(group => {
-        this.setState({
-          groups: [...this.state.groups, group]
-        });
-      });
-    });
+    Redux.store.dispatch(Redux.handleInitialData(user));
   }
 
   //Changes the view between posts and saved
@@ -120,6 +98,7 @@ export default class Profile extends React.Component {
     document.getElementById("saved-tab").classList.remove("tab-selected");
     //Add the class to the tab
     tab.add("tab-selected");
+    console.log(this.state);
   }
 
   render() {
@@ -154,7 +133,10 @@ export default class Profile extends React.Component {
         {tab === "posts-tab" && (
           <div className="tab-body">
             <span>
-              <WallGrid posts={this.state.posts} />
+              <WallGrid
+                user={this.state.userData.username}
+                posts={this.state.posts}
+              />
             </span>
           </div>
         )}
@@ -178,7 +160,10 @@ export default class Profile extends React.Component {
         {tab === "saved-tab" && (
           <div className="tab-body">
             <span>
-              <WallGrid posts={this.state.savedPosts} />
+              <WallGrid
+                posts={this.state.savedPosts}
+                user={this.state.userData.username}
+              />
             </span>
           </div>
         )}

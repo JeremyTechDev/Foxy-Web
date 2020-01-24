@@ -1,6 +1,6 @@
 import React from "react";
-import { PostData } from "../../services/PostData";
 import { searchBook } from "../../api/api";
+import * as Store from "../../store";
 
 //If no rating when submit, show this error
 class ShowErrorOnRating extends React.Component {
@@ -45,7 +45,7 @@ export default class FindBook extends React.Component {
     super(props);
 
     this.state = {
-      book: {user: this.props.user}, //starts with the user info
+      book: { user: this.props.user }, //starts with the user info
       booksSearchedOnline: [],
       displaySearchOnline: true, //decides to show online search with api
       showErrorOnRating: false
@@ -63,6 +63,12 @@ export default class FindBook extends React.Component {
         rating: rate
       }
     });
+
+    //show the currenly stars highlighted
+    const stars = document.getElementsByClassName("star");
+    for (var i = 0; i < stars.length; i++) {
+      stars[i].style.color = "gray";
+    }
   }
 
   //Changes view between online search and manually add the book
@@ -74,7 +80,7 @@ export default class FindBook extends React.Component {
   //set the book chose by the user un the book key state
   handleBookChoice(choice) {
     this.setState({
-      book: {...this.state.book, ...choice}
+      book: { ...this.state.book, ...choice }
     });
 
     this.toogle_Display(); //change display form
@@ -85,6 +91,8 @@ export default class FindBook extends React.Component {
     //Searchs the book and store data on state
     searchBook(this.state.book.title).then(data => {
       this.setState({ booksSearchedOnline: data });
+    }).catch(() => {
+      alert("No books found, try another one.")
     });
   };
 
@@ -97,10 +105,7 @@ export default class FindBook extends React.Component {
       this.setState({ showErrorOnRating: !this.state.showErrorOnRating });
       return false;
     } else {
-      //save new book on DB
-      console.log(this.state)
-      PostData("insertBook", this.state.book);
-      //window.location.reload(); //refresh page
+      Store.store.dispatch(Store.addBookAction(this.state.book));
     }
   };
 

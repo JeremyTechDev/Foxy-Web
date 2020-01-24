@@ -36,7 +36,10 @@ export default class Header extends React.Component {
               <li>
                 <NavLink
                   className="NavLink"
-                  to="/groups"
+                  to={{
+                    pathname: "/groups",
+                    search: `?user=jermy2918`
+                  }}
                   activeStyle={act}
                 >
                   Groups

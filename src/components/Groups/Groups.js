@@ -3,34 +3,33 @@ import Header from "../Header";
 import "../../css/groups.scss";
 import GroupsGrid from "./GroupsGrid";
 import CreateGroup from "./CreateGroup";
-import { PostData } from "../../services/PostData";
+import * as Redux from "../../store";
 
 export default class Groups extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      groups: [], //all gruops
-      display_CreateGroup: false //shown or hidden form
+      display_CreateGroup: false, //shown or hidden form
+      groups: []
     };
 
+    Redux.store.subscribe(() => {
+      this.setState({
+        groups: Redux.store.getState().groups
+      });
+    });
+
     this.toggleDisplay = this.toggleDisplay.bind(this);
+  }
+
+  componentDidMount() {
+    Redux.store.dispatch(Redux.handleInitialData());
   }
 
   //shows and hides corner-popup
   toggleDisplay() {
     this.setState({ display_CreateGroup: !this.state.display_CreateGroup });
-  }
-
-  componentDidMount() {
-    PostData("selectAllGroups", {}).then(res => {
-      res.allGroups.forEach(group => {
-        console.log(res);
-        this.setState({
-          groups: [...this.state.groups, group]
-        });
-      });
-    });
   }
 
   render() {
@@ -45,7 +44,10 @@ export default class Groups extends React.Component {
         {(this.state.display_CreateGroup && (
           <CreateGroup toggleDisplay={this.toggleDisplay} />
         )) || (
-          <button className="btn-toggle-AddGroup  btn" onClick={this.toggleDisplay}>
+          <button
+            className="btn-toggle-AddGroup  btn"
+            onClick={this.toggleDisplay}
+          >
             CREATE A GROUP
           </button>
         )}

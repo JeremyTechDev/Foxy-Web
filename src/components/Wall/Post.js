@@ -8,17 +8,17 @@ export default class SinglePost extends React.Component {
     return (
       <div className="op-backgroud">
         <div className="s-post">
-          <div className="s-post-img">
-            <img alt="Post" src={require("../../images/ex.png")} />
-          </div>
+          
+          {post.img && (
+            <div className="s-post-img">
+              <img alt="Post" src={post.img} />
+            </div>
+          )}
 
           <div className="s-post-content">
             <div className="post-info">
               <div className="post-info-img-container">
-                <img
-                  alt=""
-                  src={require("../../images/FOXYFACE_LOGO-01.png")}
-                />
+                <img alt="" src={post.userData[0].profile_img} />
               </div>
 
               <div className="post-info-text">
@@ -38,14 +38,11 @@ export default class SinglePost extends React.Component {
 
             <div className="s-post-comments">
               {post.comments.map(comment => {
+                console.log("here", comment);
                 return (
                   <div className="s-post-comment-container">
-                    <img
-                      alt=""
-                      src={require("../../images/FOXYFACE_LOGO-01.png")}
-                    />
                     <p className="comment-container">
-                      <strong>{comment.user_id} </strong>
+                      <strong>{comment.username} </strong>
                       {comment.comment}
                       <p className="s-comment-date">{comment.date}</p>
                     </p>

@@ -11,19 +11,20 @@ export function searchBook(book, lan = "en") {
         throw new Error(data.message);
       }
 
-       //return the three first books of the API result
-       let returnItem = [];
-       for (let i = 0; i < 3; i++) {
-         let book = data.items[i].volumeInfo;
-         returnItem.push({
-           title: book.title,
-           authors: book.authors.join(", "),
-           categories: book.categories,
-           rating: null,
-           image: book.imageLinks.thumbnail ,
-           //isbn: book.industryIdentifiers[0].identifier
-         });
-       }
-       return returnItem;
+      //return the three first books of the API result
+      let returnItem = [];
+      console.log(data);
+      for (let i = 0; i < 3; i++) {
+        let book = data.items[i].volumeInfo;
+        returnItem.push({
+          id: data.items[i].id,
+          title: book.title,
+          authors: book.authors.join(", "),
+          categories: book.categories.join(" - "),
+          rating: null,
+          image: book.imageLinks.thumbnail
+        });
+      }
+      return returnItem;
     });
 }

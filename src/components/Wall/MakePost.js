@@ -1,5 +1,5 @@
 import React from "react";
-import { PostData } from "../../services/PostData";
+import * as Redux from "../../store";
 
 export default class MakePost extends React.Component {
   constructor(props) {
@@ -30,21 +30,25 @@ export default class MakePost extends React.Component {
 
   //Saves posts on DB without refresing the page
   makePost() {
-    PostData("makePost", this.state.post);
-    //window.location.reload();
+    Redux.store.dispatch(Redux.addPostAction(this.state.post));
   }
 
+  //Shows and hides the display of add photo
   toogleDisplay() {
     this.setState({ addDisplay: !this.state.addDisplay });
-    console.log(this.state);
   }
 
   render() {
+    console.log(this.state.post.user);
+
     return (
       <React.Fragment>
         <div className="makePost">
           <div className="makePost-img-container">
-            <img alt="" src={require("../../images/FOXYFACE_LOGO-01.png")} />
+            <img
+              alt=""
+              src={"https://elysator.com/wp-content/uploads/blank-profile-picture-973460_1280-e1523978675847.png"}
+            />
             <button
               onClick={this.toogleDisplay}
               title="Add Photo"

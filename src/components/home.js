@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../css/home.scss";
 
 class FormSignIn extends React.Component {
@@ -18,7 +19,15 @@ class FormSignIn extends React.Component {
               <label>Password</label>
             </div>
 
-            <button className="btn-sign">Sign In</button>
+            <Link
+              className="NavLink"
+              to={{
+                pathname: "/wall",
+                search: `?user=jermy2918`
+              }}
+            >
+              <button className="btn-sign">Sign In</button>
+            </Link>
 
             <button className="forgot">Forgot your password?</button>
           </form>
@@ -65,7 +74,15 @@ class FormSignUp extends React.Component {
               <label>Verify password</label>
             </div>
 
-            <button className="btn-sign">Sign Up</button>
+            <Link
+              className="NavLink"
+              to={{
+                pathname: "/wall",
+                search: `?user=jermy2918`
+              }}
+            >
+              <button className="btn-sign">Sign Up</button>
+            </Link>
           </form>
         </div>
 

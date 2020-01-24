@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-01-2020 a las 19:36:47
+-- Tiempo de generación: 15-01-2020 a las 18:46:58
 -- Versión del servidor: 10.4.10-MariaDB
 -- Versión de PHP: 7.3.12
 
@@ -29,31 +29,25 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `books` (
-  `book_id` int(11) NOT NULL,
+  `book_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `authors` varchar(255) NOT NULL,
   `categories` varchar(255) NOT NULL,
-  `rate` int(11) NOT NULL,
-  `img` varchar(255) NOT NULL,
-  `isbn` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `img` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `books`
+-- Estructura de tabla para la tabla `book_owners`
 --
 
-INSERT INTO `books` (`book_id`, `title`, `authors`, `categories`, `rate`, `img`, `isbn`, `user_id`) VALUES
-(1, '50 shades of success', 'Jadson Edington', 'Array', 3, 'http://books.google.com/books/content?id=O8JWDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '', 1),
-(2, 'Percy Jackson: The Demigod Files', 'Rick Riordan', 'Array', 4, 'http://books.google.com/books/content?id=c5387N8EUEYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '', 1),
-(3, 'Percy Jackson: The Demigod Files', 'Rick Riordan', 'Array', 5, 'http://books.google.com/books/content?id=c5387N8EUEYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '', 1),
-(4, 'Filología Neotestamentaria 50', 'Varios Autores, Lautaro Roig Lanzillotta', 'Array', 4, 'http://books.google.com/books/content?id=rgWIDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '', 1),
-(5, 'Filología Neotestamentaria 50', 'Varios Autores, Lautaro Roig Lanzillotta', 'Array', 5, 'http://books.google.com/books/content?id=rgWIDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '', 1),
-(6, '50', '', '', 4, '', '', 1),
-(7, '50', '', '', 3, '', '', 1),
-(8, 'percy jackson', '', '', 4, '', '', 4),
-(9, '50', '', '', 4, '', '', 4),
-(10, 'Filología Neotestamentaria 50', 'Varios Autores, Lautaro Roig Lanzillotta', 'Array', 3, 'http://books.google.com/books/content?id=rgWIDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '', 4);
+CREATE TABLE `book_owners` (
+  `bo_id` int(11) NOT NULL COMMENT 'Book Owner Id',
+  `book_id` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `rate` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -68,17 +62,6 @@ CREATE TABLE `comments` (
   `comment` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `comments`
---
-
-INSERT INTO `comments` (`comment_id`, `post_id`, `user_id`, `comment`) VALUES
-(2, 10, 1, 'hello'),
-(3, 11, 1, 'first comment'),
-(4, 11, 1, 'second'),
-(5, 11, 1, 'third'),
-(6, 11, 1, 'last for now...');
-
 -- --------------------------------------------------------
 
 --
@@ -90,14 +73,6 @@ CREATE TABLE `follows` (
   `follower` int(11) NOT NULL,
   `following` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `follows`
---
-
-INSERT INTO `follows` (`follow_id`, `follower`, `following`) VALUES
-(1, 1, 4),
-(2, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -115,14 +90,6 @@ CREATE TABLE `groups` (
   `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `groups`
---
-
-INSERT INTO `groups` (`group_id`, `name`, `description`, `image`, `popularity`, `admin`, `date_created`) VALUES
-(3, 'Gryffindor', 'The house where Harry Potter. Therefore, the best one.', 'https://www.claires.com/dw/image/v2/BBTK_PRD/on/demandware.static/-/Sites-master-catalog/default/dweaacccf4/images/hi-res/51337_3.jpg?sw=2000&sh=2000&sm=fit', 1000, 1, '0000-00-00 00:00:00'),
-(4, 'Slytherin', 'The opponets of the best house of Hogwarts.', 'https://shoptrends.com/pub/media/catalog/product/cache/8c01c332ca8fc596e6b515a82e5be04e/p/o/pod16729-1_1.jpg', 1000, 1, '0000-00-00 00:00:00');
-
 -- --------------------------------------------------------
 
 --
@@ -135,13 +102,6 @@ CREATE TABLE `group_members` (
   `group_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `group_members`
---
-
-INSERT INTO `group_members` (`gm_id`, `user_id`, `group_id`) VALUES
-(2, 1, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -153,19 +113,6 @@ CREATE TABLE `likedposts` (
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `likedposts`
---
-
-INSERT INTO `likedposts` (`like_id`, `post_id`, `user_id`) VALUES
-(2, 1, 1),
-(3, 1, 2),
-(4, 1, 2),
-(5, 1, 2),
-(6, 4, 12),
-(7, 11, 4),
-(8, 12, 4);
 
 -- --------------------------------------------------------
 
@@ -182,22 +129,6 @@ CREATE TABLE `posts` (
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `posts`
---
-
-INSERT INTO `posts` (`post_id`, `user_id`, `content`, `img`, `likes`, `date`) VALUES
-(2, 1, 'post', '', 3, '2020-01-11 11:29:30'),
-(10, 4, '', '', 0, '0000-00-00 00:00:00'),
-(11, 4, 'hole', '', 1, '2020-01-12 22:49:28'),
-(12, 4, 'hole', '', 2, '2020-01-14 14:00:34'),
-(13, 4, 'hkk', '', 0, '0000-00-00 00:00:00'),
-(14, 1, '$content', '$image', 0, '0000-00-00 00:00:00'),
-(15, 1, 'ee', '', 0, '0000-00-00 00:00:00'),
-(16, 1, 'hello', 'https://s.ftcdn.net/v2013/pics/all/curated/RKyaEDwp8J7JKeZWQPuOVWvkUjGQfpCx_cover_580.jpg?r=1a0fc22192d0c808b8bb2b9bcfbf4a45b1793687', 0, '0000-00-00 00:00:00'),
-(17, 4, 'quiero hacr un pot\npero\nque \ntenga \nlinead', '', 0, '0000-00-00 00:00:00'),
-(18, 1, 'lets see if it works', '', 0, '0000-00-00 00:00:00');
-
 -- --------------------------------------------------------
 
 --
@@ -209,13 +140,6 @@ CREATE TABLE `savedposts` (
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `savedposts`
---
-
-INSERT INTO `savedposts` (`save_id`, `post_id`, `user_id`) VALUES
-(3, 13, 4);
 
 -- --------------------------------------------------------
 
@@ -235,14 +159,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `users`
---
-
-INSERT INTO `users` (`user_id`, `name`, `username`, `password`, `bio`, `join_date`, `cover_img`, `profile_img`) VALUES
-(1, 'Jeremy', 'jermy2918', '19922202', 'U know who I am.', '2020-01-10 14:08:35', 'https://s3-us-east-2.amazonaws.com/enterate24backup/wp-content/uploads/2019/10/08180834/L_5b150f23729cb_shutterstock_552368572.jpg', 'https://elysator.com/wp-content/uploads/blank-profile-picture-973460_1280-e1523978675847.png'),
-(4, 'Jose', 'jose2020', '12345678', 'bio', '2020-01-14 13:41:28', '', 'https://elysator.com/wp-content/uploads/blank-profile-picture-973460_1280-e1523978675847.png');
-
---
 -- Índices para tablas volcadas
 --
 
@@ -251,6 +167,14 @@ INSERT INTO `users` (`user_id`, `name`, `username`, `password`, `bio`, `join_dat
 --
 ALTER TABLE `books`
   ADD PRIMARY KEY (`book_id`),
+  ADD UNIQUE KEY `book_id` (`book_id`);
+
+--
+-- Indices de la tabla `book_owners`
+--
+ALTER TABLE `book_owners`
+  ADD PRIMARY KEY (`bo_id`),
+  ADD KEY `book_id` (`book_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -306,68 +230,69 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT de la tabla `books`
+-- AUTO_INCREMENT de la tabla `book_owners`
 --
-ALTER TABLE `books`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+ALTER TABLE `book_owners`
+  MODIFY `bo_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Book Owner Id';
 
 --
 -- AUTO_INCREMENT de la tabla `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `follows`
 --
 ALTER TABLE `follows`
-  MODIFY `follow_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `follow_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `group_members`
 --
 ALTER TABLE `group_members`
-  MODIFY `gm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `gm_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `likedposts`
 --
 ALTER TABLE `likedposts`
-  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `savedposts`
 --
 ALTER TABLE `savedposts`
-  MODIFY `save_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `save_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `books`
+-- Filtros para la tabla `book_owners`
 --
-ALTER TABLE `books`
-  ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+ALTER TABLE `book_owners`
+  ADD CONSTRAINT `book_owners_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`),
+  ADD CONSTRAINT `book_owners_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

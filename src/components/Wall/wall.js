@@ -3,35 +3,37 @@ import Header from "../Header";
 import WallGrid from "./WallGrid";
 import MakePost from "./MakePost";
 import "../../css/wall.scss";
-import { PostData } from "../../services/PostData";
 import queryString from "query-string";
+import * as Redux from "../../store";
 
 export default class Wall extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: "",
-      posts: [] //list of all posts
+      posts: []
     };
-  }
 
-  componentDidMount() {
-    const { user } = queryString.parse(this.props.location.search); //the user to display from URL
-    //gets all post's information
-    this.setState({user: user});
-    PostData("selectAllPosts", { user: user }).then(res => {
-      this.setState({ posts: res});
+    Redux.store.subscribe(() => {
+      this.setState({
+        posts: Redux.store.getState().posts
+      });
     });
   }
-
+  componentDidMount() {
+    const { user } = queryString.parse(this.props.location.search);
+    Redux.store.dispatch(Redux.handleInitialData(user));
+  }
   render() {
     return (
       <React.Fragment>
         <Header />
         <div className="posts-cotainer">
           <MakePost user={queryString.parse(this.props.location.search)} />
-          <WallGrid posts={this.state.posts} user={this.state.user} />
+          <WallGrid
+            posts={this.state.posts}
+            user={queryString.parse(this.props.location.search)}
+          />
         </div>
       </React.Fragment>
     );

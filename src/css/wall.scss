@@ -141,7 +141,6 @@
 }
 .makePost-img-container {
   display: inline-block;
-  background: $light;
   width: 70px;
   height: 70px;
   margin: 0px 10px;
@@ -157,6 +156,7 @@
   img {
     width: 100%;
     height: 100%;
+    border-radius: 50%;
   }
 }
 .makePost-text {
@@ -214,7 +214,7 @@
   top: 47%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70%;
+  width: auto;
   height: 70%;
   background: #000;
 }
@@ -239,7 +239,7 @@
   }
 }
 .s-post-content {
-  width: 30%;
+  min-width: 30%;
   height: 100%;
   .post-info-img-container {
     width: 75px;
@@ -278,5 +278,8 @@
   }
   .comment-container {
     padding-top: 5px;
+    p {
+      font-weight: 100;
+    }
   }
 }
